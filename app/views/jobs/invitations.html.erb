@@ -1,0 +1,59 @@
+<% if !notice.nil? %>
+	<div class="noticesuccess">
+		<%= image_tag("visto.png", :alt => "Sample App") %><span class="green"><%= notice %></span><hr />
+	</div>
+<% end%>
+<div style="height: 40px; margin-top: 15px;">
+	<h3 class="jobtitle"><%= @job.name %></h3>
+	<div style="float: right;">
+		<%if @job.status == 'open'%>
+			<input ONCLICK="window.location.href='<%= @job.wiki %>'" type="button" value="Edit" class="button">
+		<%else%>
+			<input ONCLICK="window.location.href='<%= @job.wiki %>'" type="button" value="View" class="button">
+		<%end%>
+	</div>
+</div>
+<div style="padding: 5px; background: #333333;"></div>
+<div id="tabscontributors">
+	<ul>
+		<li><a href="#tabs-0">Description</a></li>
+		<li><a href="#tabs-1">Templates</a></li>
+		<li><a href="#tabs-2">Skills</a></li>
+		<li><a href="#tabs-3">Invitations</a></li>
+		<li><a href="#tabs-4">Peers</a></li>
+		<li><a href="#tabs-5">Versions</a></li>
+		<li><a href="#tabs-6">Reward</a></li>
+		
+	</ul>
+	<%= form_for :invitations, :url => { :action => "update", :controller => "invitations"}, :html => { :onsubmit => "validate();" } do |f| %>
+		<% if @job.viral == "Yes" %>
+			<script>
+				$(function() {
+					$( "#tabscontributors" ).tabs({
+						disabled: [0,1,2,5,6],
+						cache: true
+					});
+				});	
+			</script>
+		<% else%>
+			<script>
+				$(function() {
+					$( "#tabscontributors" ).tabs({
+						disabled: [0,1,2,3,5,6],
+						cache: true
+					});
+				});
+			</script>
+		<% end%>
+		<% if @job.status == "open"%>	
+			<div id="tabs-3">
+				<% if @job.viral == "Yes" %>
+					<%= render( :template => 'invitations/show', :locals => {:f => f} ) %>
+				<% end %>
+			</div>
+		<% end%>
+		<div id="tabs-4">
+			<%= render :partial => 'contributions'%>
+		</div>
+	<% end%>
+</div>

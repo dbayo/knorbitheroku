@@ -1,0 +1,19 @@
+<% if hasaccesstothedocument? %>
+	<h2 id="title" class="edit_content"><%= @version.document.name %></h2>
+	<div id="content" class="edit_content">
+		<% if @version.content.nil? or @version.content.empty?  %>
+				<p>Empty section</p>
+			<% else %>
+				<p><%= @version.content.html_safe %></p>
+			<% end%>
+	</div>
+<%else%>
+	<div id="noticesuccess">
+		<% @invitation = Invitations.find(:first, :conditions => ['status = ? and user_email = ? and job_id = ?', 'pending', current_user.email, @job.id ]) %>
+		<% if @invitation.nil? %>
+			<%= image_tag("blocked.png") %><span style="color: red"> Invalid access.</span><br/>
+		<% else %>
+			<%= image_tag("blocked.png") %><span style="color: red"> Invalid access. To see the content of this section, you should accept the invitation : <%= link_to 'Accept invitation', '/invitations/'+@invitation.id.to_s+'/accept' %></span><br/>
+		<% end %>
+	</div>
+<%end%>

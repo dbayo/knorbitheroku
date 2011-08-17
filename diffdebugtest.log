@@ -1,0 +1,153 @@
+old = %Q{}
+new = %Q{
+				<p>Type here ... asdfasdf&nbsp;<a href="http://www.knorbit.com/" target="_blank" class="aloha" data-gentics-aloha-repository="com.gentics.aloha.repositories.delicious" data-gentics-aloha-object-id="http://www.knorbit.com/" data-name="knOrbit">New Link</a></p>
+		}
+result = %Q{<span class="user2"></span><p><span class="user2">Type here ... asdfasdf&nbsp;</span><a href="http://www.knorbit.com/" target="_blank" class="aloha" data-gentics-aloha-repository="com.gentics.aloha.repositories.delicious" data-gentics-aloha-object-id="http://www.knorbit.com/" data-name="knOrbit"><span class="user2">New Link</span></a><span class="user2"></span></p><span class="user2"></span>}
+old = %Q{<span class="user2"></span><p><span class="user2">Type here ... asdfasdf&nbsp;</span><a href="http://www.knorbit.com/" target="_blank" class="aloha" data-gentics-aloha-repository="com.gentics.aloha.repositories.delicious" data-gentics-aloha-object-id="http://www.knorbit.com/" data-name="knOrbit"><span class="user2">New Link</span></a><span class="user2"></span></p><span class="user2"></span>}
+new = %Q{
+				<span class="user2"></span><p><span class="user2">Type here ... asdfqwerasdf&nbsp;</span><a href="http://www.knorbit.com/" target="_blank" class="aloha" data-gentics-aloha-repository="com.gentics.aloha.repositories.delicious" data-gentics-aloha-object-id="http://www.knorbit.com/" data-name="knOrbit"><span class="user2">New Link</span></a><span class="user2"></span></p><span class="user2"></span>
+		}
+result = %Q{<span class="user2"></span><p><span class="user2">Type here ... <span class="user2">asdfqwerasdf</span>&nbsp;</span><a href="http://www.knorbit.com/" target="_blank" class="aloha" data-gentics-aloha-repository="com.gentics.aloha.repositories.delicious" data-gentics-aloha-object-id="http://www.knorbit.com/" data-name="knOrbit"><span class="user2">New Link</span></a><span class="user2"></span></p><span class="user2"></span>}
+old = %Q{<span class="user2"></span><p><span class="user2">Type here ... <span class="user2">asdfqwerasdf</span>&nbsp;</span><a href="http://www.knorbit.com/" target="_blank" class="aloha" data-gentics-aloha-repository="com.gentics.aloha.repositories.delicious" data-gentics-aloha-object-id="http://www.knorbit.com/" data-name="knOrbit"><span class="user2">New Link</span></a><span class="user2"></span></p><span class="user2"></span>}
+new = %Q{
+				<span class="user2"></span><p><span class="user2">Type here ... <span class="user2">asdfqweqwer qwe rasdf</span>&nbsp;</span><a href="http://www.knorbit.com/" target="_blank" class="aloha" data-gentics-aloha-repository="com.gentics.aloha.repositories.delicious" data-gentics-aloha-object-id="http://www.knorbit.com/" data-name="knOrbit"><span class="user2">New Link</span></a><span class="user2"></span></p><span class="user2"></span>
+		}
+result = %Q{<span class="user2"></span><p><span class="user2">Type here ... <span class="user2"><span class="user2">asdfqweqwer qwe rasdf</span></span>&nbsp;</span><a href="http://www.knorbit.com/" target="_blank" class="aloha" data-gentics-aloha-repository="com.gentics.aloha.repositories.delicious" data-gentics-aloha-object-id="http://www.knorbit.com/" data-name="knOrbit"><span class="user2">New Link</span></a><span class="user2"></span></p><span class="user2"></span>}
+old = %Q{<span class="user2"></span><p><span class="user2">Type here ... <span class="user2"><span class="user2">asdfqweqwer qwe rasdf</span></span>&nbsp;</span><a href="http://www.knorbit.com/" target="_blank" class="aloha" data-gentics-aloha-repository="com.gentics.aloha.repositories.delicious" data-gentics-aloha-object-id="http://www.knorbit.com/" data-name="knOrbit"><span class="user2">New Link</span></a><span class="user2"></span></p><span class="user2"></span>}
+new = %Q{
+				<span class="user2"></span><p><span class="user2">Type here ... <span class="user2"><span class="user2">asdfqweqwer qwe rasdf</span></span>&nbsp;</span><span class="user2"><a href="http://www.knorbit.com/" target="_blank" class="aloha" data-gentics-aloha-repository="com.gentics.aloha.repositories.delicious" data-gentics-aloha-object-id="http://www.knorbit.com/" data-name="knOrbit">New Link</a>hola</span><span class="user2"></span></p><span class="user2"></span>
+		}
+result = %Q{<span class="user2"></span><p><span class="user2">Type here ... <span class="user2"><span class="user2">asdfqweqwer qwe rasdf</span></span>&nbsp;</span><span class="user2"><span class="user2"></span><a href="http://www.knorbit.com/" target="_blank" class="aloha" data-gentics-aloha-repository="com.gentics.aloha.repositories.delicious" data-gentics-aloha-object-id="http://www.knorbit.com/" data-name="knOrbit">New Link</a><span class="user2">hola</span></span><span class="user2"></span></p><span class="user2"></span>}
+old = %Q{<span class="user2"></span><p><span class="user2">Type here ... <span class="user2"><span class="user2">asdfqweqwer qwe rasdf</span></span>&nbsp;</span><span class="user2"><span class="user2"></span><a href="http://www.knorbit.com/" target="_blank" class="aloha" data-gentics-aloha-repository="com.gentics.aloha.repositories.delicious" data-gentics-aloha-object-id="http://www.knorbit.com/" data-name="knOrbit">New Link</a><span class="user2">hola</span></span><span class="user2"></span></p><span class="user2"></span>}
+new = %Q{
+				<span class="user2"></span><p><span class="user2">Type here ... <span class="user2"><span class="user2">asdfqweqwer qwe rasdf</span></span>&nbsp;</span><span class="user2"><span class="user2"></span><a href="http://www.knorbit.com/" target="_blank" class="aloha" data-gentics-aloha-repository="com.gentics.aloha.repositories.delicious" data-gentics-aloha-object-id="http://www.knorbit.com/" data-name="knOrbit">New Link</a><span class="user2">hola</span></span><span class="user2"></span></p><span class="user2"></span>
+		}
+result = %Q{<span class="user2"></span><p><span class="user2">Type here ... <span class="user2"><span class="user2">asdfqweqwer qwe rasdf</span></span>&nbsp;</span><span class="user2"><span class="user2"></span><a href="http://www.knorbit.com/" target="_blank" class="aloha" data-gentics-aloha-repository="com.gentics.aloha.repositories.delicious" data-gentics-aloha-object-id="http://www.knorbit.com/" data-name="knOrbit">New Link</a><span class="user2">hola</span></span><span class="user2"></span></p><span class="user2"></span>}
+old = %Q{<span class="user2"></span><p><span class="user2">Type here ... <span class="user2"><span class="user2">asdfqweqwer qwe rasdf</span></span>&nbsp;</span><span class="user2"><span class="user2"></span><a href="http://www.knorbit.com/" target="_blank" class="aloha" data-gentics-aloha-repository="com.gentics.aloha.repositories.delicious" data-gentics-aloha-object-id="http://www.knorbit.com/" data-name="knOrbit">New Link</a><span class="user2">hola</span></span><span class="user2"></span></p><span class="user2"></span>}
+new = %Q{
+				<span class="user2"></span><p><span class="user2">Type here ... <span class="user2"><span class="user2">asdfqweqwer qwe rasdf</span></span>&nbsp;</span><span class="user2"><span class="user2"></span><a href="http://www.knorbit.com/" target="_blank" class="aloha" data-gentics-aloha-repository="com.gentics.aloha.repositories.delicious" data-gentics-aloha-object-id="http://www.knorbit.com/" data-name="knOrbit">New Link</a><span class="user2">hola</span></span><span class="user2"></span></p><span class="user2"></span>
+		}
+result = %Q{<span class="user2"></span><p><span class="user2">Type here ... <span class="user2"><span class="user2">asdfqweqwer qwe rasdf</span></span>&nbsp;</span><span class="user2"><span class="user2"></span><a href="http://www.knorbit.com/" target="_blank" class="aloha" data-gentics-aloha-repository="com.gentics.aloha.repositories.delicious" data-gentics-aloha-object-id="http://www.knorbit.com/" data-name="knOrbit">New Link</a><span class="user2">hola</span></span><span class="user2"></span></p><span class="user2"></span>}
+old = %Q{}
+new = %Q{
+				<p>qwerqwer qwerqwe&nbsp;</p>
+		}
+result = %Q{<span class="user2"></span><p><span class="user2">qwerqwer qwerqwe&nbsp;</span></p><span class="user2"></span>}
+old = %Q{}
+new = %Q{
+				<p>Type here ...qweqwer&nbsp;</p>
+		}
+result = %Q{<span class="user2"></span><p><span class="user2">Type here ...qweqwer&nbsp;</span></p><span class="user2"></span>}
+old = %Q{hola}
+new = %Q{
+				hola qwerqwer}
+result = %Q{hola<span class="user2"> qwerqwer</span>}
+old = %Q{}
+new = %Q{
+				<p>Type here ...qwerqwer</p>
+		}
+result = %Q{<span class="user2"></span><p><span class="user2">Type here ...qwerqwer</span></p><span class="user2"></span>}
+old = %Q{}
+new = %Q{
+				<p>qwerqwe qwer</p>
+		}
+result = %Q{<span class="user2"></span><p><span class="user2">qwerqwe qwer</span></p><span class="user2"></span>}
+old = %Q{<span class="user2"></span><p><span class="user2">qwerqwe qwer</span></p><span class="user2"></span>}
+new = %Q{
+				<span class="user2"></span><p><span class="user2">qwerqwe qwer qwerqw</span></p><span class="user2"></span>
+		}
+result = %Q{<span class="user2"></span><p><span class="user2">qwerqwe qwer<span class="user2"> qwerqw</span></span></p><span class="user2"></span>}
+old = %Q{<span class="user2"></span><p><span class="user2">qwerqwe qwer<span class="user2"> qwerqw</span></span></p><span class="user2"></span>}
+new = %Q{
+				<span class="user2"></span><p><span class="user2">qwerqwe qwer<span class="user2"> qwerqwqwer</span></span></p><span class="user2"></span>
+		}
+result = %Q{<span class="user2"></span><p><span class="user2">qwerqwe qwer<span class="user2"> <span class="user2">qwerqwqwer</span></span></span></p><span class="user2"></span>}
+old = %Q{<span class="user2"></span><p><span class="user2">qwerqwe qwer<span class="user2"> <span class="user2">qwerqwqwer</span></span></span></p><span class="user2"></span>}
+new = %Q{
+				<span class="user2"></span><p><span class="user2">qwerqwe qwer<span class="user2"> <span class="user2">qwerqwqwer</span></span></span></p><span class="user2"></span>
+		}
+result = %Q{<span class="user2"></span><p><span class="user2">qwerqwe qwer<span class="user2"> <span class="user2">qwerqwqwer</span></span></span></p><span class="user2"></span>}
+old = %Q{<span class="user2"></span><p><span class="user2">qwerqwe qwer<span class="user2"> <span class="user2">qwerqwqwer</span></span></span></p><span class="user2"></span>}
+new = %Q{
+				<span class="user2"></span><p><span class="user2">qwerqwe qwer<span class="user2"> <span class="user2">qwerqwqwer</span></span></span></p><span class="user2"></span>
+		}
+result = %Q{<span class="user2"></span><p><span class="user2">qwerqwe qwer<span class="user2"> <span class="user2">qwerqwqwer</span></span></span></p><span class="user2"></span>}
+old = %Q{<span class="user2"></span><p><span class="user2">qwerqwe qwer<span class="user2"> <span class="user2">qwerqwqwer</span></span></span></p><span class="user2"></span>}
+new = %Q{
+				<span class="user2"></span><p><span class="user2">qwerqwe qwer<span class="user2"> <span class="user2">qwerqwqwerqewr</span></span></span></p><span class="user2"></span>
+		}
+result = %Q{<span class="user2"></span><p><span class="user2">qwerqwe qwer<span class="user2"> <span class="user2"><span class="user2">qwerqwqwerqewr</span></span></span></span></p><span class="user2"></span>}
+old = %Q{<span class="user2"></span><p><span class="user2">qwerqwe qwer<span class="user2"> <span class="user2"><span class="user2">qwerqwqwerqewr</span></span></span></span></p><span class="user2"></span>}
+new = %Q{
+				<span class="user2"></span><p><span class="user2">qwerqwe qqwe qw wer<span class="user2"> <span class="user2"><span class="user2">qwerqwqwerqewr</span></span></span></span></p><p><span class="user2"></span></p><p><span class="user2"></span></p><p><span class="user2"></span></p><p><span class="user2"></span></p><p><span class="user2"></span></p><p><span class="user2"></span></p><span class="user2"></span>
+		}
+result = %Q{<span class="user2"></span><p><span class="user2">qwerqwe <span class="user2">qqwe qw wer</span><span class="user2"> <span class="user2"><span class="user2">qwerqwqwerqewr</span></span></span></span></p><p><span class="user2"></span><span class="user2"></span><span class="user2"></span></p><span class="user2"></span><p><span class="user2"></span><span class="user2"><span class="user2"></span></span><span class="user2"></span></p><span class="user2"></span><p><span class="user2"></span><span class="user2"><span class="user2"></span></span><span class="user2"></span></p><span class="user2"></span><p><span class="user2"></span><span class="user2"><span class="user2"></span></span><span class="user2"></span></p><span class="user2"></span><p><span class="user2"></span><span class="user2"><span class="user2"></span></span><span class="user2"></span></p><span class="user2"></span><p><span class="user2"></span><span class="user2"><span class="user2"></span></span><span class="user2"></span></p><span class="user2"></span><span class="user2"><span class="user2"></span></span>}
+old = %Q{<span class="user2"></span><p><span class="user2">qwerqwe <span class="user2">qqwe qw wer</span><span class="user2"> <span class="user2"><span class="user2">qwerqwqwerqewr</span></span></span></span></p><p><span class="user2"></span><span class="user2"></span><span class="user2"></span></p><span class="user2"></span><p><span class="user2"></span><span class="user2"><span class="user2"></span></span><span class="user2"></span></p><span class="user2"></span><p><span class="user2"></span><span class="user2"><span class="user2"></span></span><span class="user2"></span></p><span class="user2"></span><p><span class="user2"></span><span class="user2"><span class="user2"></span></span><span class="user2"></span></p><span class="user2"></span><p><span class="user2"></span><span class="user2"><span class="user2"></span></span><span class="user2"></span></p><span class="user2"></span><p><span class="user2"></span><span class="user2"><span class="user2"></span></span><span class="user2"></span></p><span class="user2"></span><span class="user2"><span class="user2"></span></span>}
+new = %Q{
+				<span class="user2"></span><p><span class="user2">qwerqwe <span class="user2">qqwe qw wer</span><span class="user2"> <span class="user2"><span class="user2">qwerqwqwerqewr qwer</span></span></span></span></p><p><span class="user2"></span><span class="user2"></span><span class="user2"></span></p><span class="user2"></span><p><span class="user2"></span><span class="user2"><span class="user2"></span></span><span class="user2"></span></p><span class="user2"></span><p><span class="user2"></span><span class="user2"><span class="user2"></span></span><span class="user2"></span></p><span class="user2"></span><p><span class="user2"></span><span class="user2"><span class="user2"></span></span><span class="user2"></span></p><span class="user2"></span><p><span class="user2"></span><span class="user2"><span class="user2"></span></span><span class="user2"></span></p><span class="user2"></span><p><span class="user2"></span><span class="user2"><span class="user2"></span></span><span class="user2"></span></p><span class="user2"></span><span class="user2"><span class="user2"></span></span>
+		}
+result = %Q{<span class="user2"></span><p><span class="user2">qwerqwe <span class="user2">qqwe qw wer</span><span class="user2"> <span class="user2"><span class="user2">qwerqwqwerqewr<span class="user2"> qwer</span></span></span></span></span></p><p><span class="user2"></span><span class="user2"></span><span class="user2"></span></p><span class="user2"></span><p><span class="user2"></span><span class="user2"><span class="user2"></span></span><span class="user2"></span></p><span class="user2"></span><p><span class="user2"></span><span class="user2"><span class="user2"></span></span><span class="user2"></span></p><span class="user2"></span><p><span class="user2"></span><span class="user2"><span class="user2"></span></span><span class="user2"></span></p><span class="user2"></span><p><span class="user2"></span><span class="user2"><span class="user2"></span></span><span class="user2"></span></p><span class="user2"></span><p><span class="user2"></span><span class="user2"><span class="user2"></span></span><span class="user2"></span></p><span class="user2"></span><span class="user2"><span class="user2"></span></span>}
+old = %Q{</span>}
+new = %Q{qwer}
+result = %Q{<span class="user2">qwer</span>}
+old = %Q{<span class="user2">qwer</span>}
+new = %Q{
+				<span class="user2">qwer qwer</span>}
+result = %Q{<span class="user2">qwer<span class="user2"> qwer</span></span>}
+old = %Q{<span class="user2">qwer<span class="user2"> qwer</span></span>}
+new = %Q{
+				<span class="user2">qweasdfr<span class="user2"> qwerzzxcv</span></span>}
+result = %Q{<span class="user2"><span class="user2">qweasdfr</span><span class="user2"> <span class="user2">qwerzzxcv</span></span></span>}
+old = %Q{<span class="user2"><span class="user2">qweasdfr</span><span class="user2"> <span class="user2">qwerzzxcv</span></span></span>}
+new = %Q{
+				<span class="user2"><span class="user2">qweasdfr</span><span class="user2"> <span class="user2">qwer &nbsp;eqwe ezzxcv qe</span></span></span>}
+result = %Q{<span class="user2"><span class="user2">qweasdfr</span><span class="user2"> <span class="user2"><span class="user2">qwer &nbsp;eqwe ezzxcv qe</span></span></span></span>}
+old = %Q{<span class="user2"><span class="user2">qweasdfr</span><span class="user2"> <span class="user2"><span class="user2">qwer &nbsp;eqwe ezzxcv qe</span></span></span></span>}
+new = %Q{
+				<span class="user2"><span class="user2">qweasdfr</span><span class="user2"> <span class="user2"><span class="user2">qwer &nbsp;eqwe ezzxcv qe &lt;</span></span></span></span>}
+result = %Q{<span class="user2"><span class="user2">qweasdfr</span><span class="user2"> <span class="user2"><span class="user2">qwer &nbsp;eqwe ezzxcv qe<span class="user2"> &lt;</span></span></span></span></span>}
+old = %Q{<span class="user2"><span class="user2">qweasdfr</span><span class="user2"> <span class="user2"><span class="user2">qwer &nbsp;eqwe ezzxcv qe<span class="user2"> &lt;</span></span></span></span></span>}
+new = %Q{
+				<span class="user2"><span class="user2">qweasdfr</span><span class="user2"> <span class="user2"><span class="user2">qwer &nbsp;eqwe ezzxcv qe<span class="user2">&nbsp;&lt;/span&gt;&lt;span class="user1"&gt;</span></span></span></span></span>}
+result = %Q{<span class="user2"><span class="user2">qweasdfr</span><span class="user2"> <span class="user2"><span class="user2">qwer &nbsp;eqwe ezzxcv qe<span class="user2"><span class="user2">&nbsp;&</span>lt<span class="user2">;/span&gt;&lt;span class="user1"&gt</span>;</span></span></span></span></span>}
+old = %Q{<span class="user2"><span class="user2">qweasdfr</span><span class="user2"> <span class="user2"><span class="user2">qwer &nbsp;eqwe ezzxcv qe<span class="user2"><span class="user2">&nbsp;&</span>lt<span class="user2">;/span&gt;&lt;span class="user1"&gt</span>;</span></span></span></span></span>}
+new = %Q{
+				<span class="user2"><span class="user2">qweasdfr</span><span class="user2"> <span class="user2"><span class="user2">qwer &nbsp;eqwe ezzxcv qe<span class="user2"><span class="user2">&nbsp;&lt;</span><span class="user2">span&gt;&lt;span class="user1"&gt;</span></span></span></span></span></span>}
+result = %Q{<span class="user2"><span class="user2">qweasdfr</span><span class="user2"> <span class="user2"><span class="user2">qwer &nbsp;eqwe ezzxcv qe<span class="user2"><span class="user2">&nbsp;&lt<span class="user2">;</span></span><span class="user2"></span><span class="user2"><span class="user2">span&gt;&lt</span>;span class="user1"&gt<span class="user2">;</span></span></span></span></span></span><span class="user2"></span></span>}
+old = %Q{<span class="user2"><span class="user2">qweasdfr</span><span class="user2"> <span class="user2"><span class="user2">qwer &nbsp;eqwe ezzxcv qe<span class="user2"><span class="user2">&nbsp;&lt<span class="user2">;</span></span><span class="user2"></span><span class="user2"><span class="user2">span&gt;&lt</span>;span class="user1"&gt<span class="user2">;</span></span></span></span></span></span><span class="user2"></span></span>}
+new = %Q{
+				<span class="user2"><span class="user2">qweasdfr</span><span class="user2"> <span class="user2"><span class="user2">qwer &nbsp;eqwe ezzxcv qe<span class="user2"><span class="user2">&nbsp;&lt;<span class="user2">;</span></span><span class="user2"></span><span class="user2"><span class="user2">span&gt;&lt;</span>;span class="user1"&gt;<span class="user2">;</span></span></span></span></span></span><span class="user2"></span></span>
+		}
+result = %Q{<span class="user2"><span class="user2">qweasdfr</span><span class="user2"> <span class="user2"><span class="user2">qwer &nbsp;eqwe ezzxcv qe<span class="user2"><span class="user2">&nbsp;&lt<span class="user2">;</span><span class="user2">;</span></span><span class="user2"></span><span class="user2"><span class="user2">span&gt;&lt<span class="user2">;</span></span>;span class="user1"&gt<span class="user2">;</span><span class="user2">;</span></span></span></span></span></span><span class="user2"></span></span>}
+old = %Q{<span class="user2"><span class="user2">qweasdfr</span><span class="user2"> <span class="user2"><span class="user2">qwer &nbsp;eqwe ezzxcv qe<span class="user2"><span class="user2">&nbsp;&lt<span class="user2">;</span><span class="user2">;</span></span><span class="user2"></span><span class="user2"><span class="user2">span&gt;&lt<span class="user2">;</span></span>;span class="user1"&gt<span class="user2">;</span><span class="user2">;</span></span></span></span></span></span><span class="user2"></span></span>}
+new = %Q{
+				<span class="user2"><span class="user2">qweasdfr</span><span class="user2"> <span class="user2"><span class="user2">qwer &nbsp;eqwe ezzxcv qe<span class="user2"><span class="user2">&nbsp;</span></span></span></span></span></span>}
+result = %Q{<span class="user2"><span class="user2">qweasdfr</span><span class="user2"> <span class="user2"><span class="user2">qwer &nbsp;eqwe ezzxcv qe<span class="user2"><span class="user2">&nbsp<span class="user2">;</span></span></span></span></span></span></span>}
+old = %Q{}
+new = %Q{
+				<p>Hola nene</p><p>que tal estas?</p>
+		}
+result = %Q{<span class="user2"></span><p><span class="user2">Hola nene</span></p><span class="user2"></span><p><span class="user2">que tal estas?</span></p><span class="user2"></span>}
+old = %Q{<span class="user2"></span><p><span class="user2">Hola nene</span></p><span class="user2"></span><p><span class="user2">que tal estas?</span></p><span class="user2"></span>}
+new = %Q{
+				<span class="user2"></span><p><br></p><span class="user2"></span>
+		}
+result = %Q{<span class="user2"></span><p><br><span class="user2"></span></p><span class="user2"></span><span class="user2"></span>}
+old = %Q{<span class="user2"></span><p><br><span class="user2"></span></p><span class="user2"></span><span class="user2"></span>}
+new = %Q{}
+result = %Q{}
+old = %Q{}
+new = %Q{
+				<p>Hola nene que tal estas</p>
+		}
+result = %Q{<span class="user2"></span><p><span class="user2">Hola nene que tal estas</span></p><span class="user2"></span>}
+old = %Q{<span class="user2"></span><p><span class="user2">Hola nene que tal estas</span></p><span class="user2"></span>}
+new = %Q{
+				<span class="user2"></span><p><span class="user2">Hola nene que tal estas</span></p><p><br class="GENTICS_ephemera"></p><span class="user2"></span>
+		}
+result = %Q{<span class="user2"></span><p><span class="user2">Hola nene que tal estas</span></p><p><span class="user1"></span><br class="GENTICS_ephemera"><span class="user1"></span></p><span class="user1"></span><span class="user2"></span>}
+old = %Q{}
+new = %Q{
+				<p>Section 1 bla bla</p>
+		}
+result = %Q{<span class="user3"></span><p><span class="user3">Section 1 bla bla</span></p><span class="user3"></span>}

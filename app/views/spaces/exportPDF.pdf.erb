@@ -1,0 +1,19 @@
+<h1><b><%=@job.description%></b></h1>
+<h2>Table of contents</h2>
+<p><b>Title : </b><%=@job.name %></p><p><b>Author : </b><%=@job.user.name%></p><p><b>Description : </b><%=@job.description%></p><p><b>Job Sections : </b></p>
+<div id="content">
+	<% if !@space.content.nil? and !@space.content.empty?  %>
+		<p><%= @space.content.html_safe %></p>
+	<% end%>
+</div>
+
+<% @documents.each { |doc| if !doc.content.nil? then %> 
+	<div>
+		<h1><%= doc.name%></h1>
+		<div>
+			<%=doc.content.html_safe %>
+		</div>
+	</div> 
+	<%end }%>
+	
+<br/>

@@ -1,0 +1,55 @@
+<% if !notice.nil? %>
+	<div class="noticesuccess">
+		<%= image_tag("visto.png", :alt => "Saved") %><span class="green"><%= notice %></span><hr />
+	</div>
+<% end%>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th style="width:40%;">Skills, knowledge & interests</th>
+			<th>In more detail</th>
+		</tr>
+	</thead>
+	
+	<tbody>
+		<%if !@profile.keyword1.empty? or !@profile.qualifier1.empty?  %>
+			<tr>
+				<td><%= @profile.keyword1 %></td>
+				<td><%= @profile.qualifier1 %></td>
+			</tr>
+		<%end%>
+		<%if !@profile.keyword2.empty? or !@profile.qualifier2.empty?  %>
+			<tr>
+				<td><%= @profile.keyword2 %></td>
+				<td><%= @profile.qualifier2 %></td>
+			</tr>
+		<%end%>
+		<%if !@profile.keyword3.empty? or !@profile.qualifier3.empty?  %>
+			<tr>
+				<td><%= @profile.keyword3 %></td>
+				<td><%= @profile.qualifier3 %></td>
+			</tr>
+		<%end%>
+		<%if !@profile.keyword4.empty? or !@profile.qualifier4.empty?  %>
+			<tr>
+				<td><%= @profile.keyword4 %></td>
+				<td><%= @profile.qualifier4 %></td>
+			</tr>
+		<%end%>
+		<%if !@profile.keyword5.empty? or !@profile.qualifier5.empty?  %>
+			<tr>
+				<td><%= @profile.keyword5 %></td>
+				<td><%= @profile.qualifier5 %></td>
+			</tr>
+		<%end%>
+	</tbody>
+</table>
+<% if @profile.user.id == current_user.id %>
+	<input ONCLICK="window.location.href='<%= edit_profile_path(@profile) %>'" type="button" value="Edit" class="button">
+	<script>
+		$('.table tbody tr td').click(function() {
+		  	window.location.href='<%= edit_profile_path(@profile) %>';
+		});
+	</script>
+<% end%>

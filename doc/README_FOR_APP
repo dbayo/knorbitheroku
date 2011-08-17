@@ -1,0 +1,67 @@
+Use this README file to introduce your application and point to useful places in the API for learning more.
+Run "rake doc:app" to generate API documentation for your models, controllers, helpers, and libraries.
+
+= Fetching the Postgresql branch
+
+$git clone git@github.com:knorbit/WN.git
+$git fetch origin postgresql
+$git checkout postgresql
+
+
+= Install Rails 3.0.8
+
+$gem update --system
+
+if you are behind of a proxy you can do
+
+$export http_proxy="http://web-proxy:8088"
+$sudo env http_proxy="http://web-proxy:8088" gem update --system
+$sudo env http_proxy="http://web-proxy:8088" gem install rails
+
+= Install Postgressql
+
+1. Install Posgressql binary (9.0.4)
+
+2. Install the postgress native gem, and point to the installation paths
+
+$sudo env ARCHFLAGS='-arch x86_64' gem install pg -- --with-pg-include=/Library/PostgreSQL/9.0/include/ --with-pg-lib=/Library/PostgreSQL/9.0/lib/
+
+or if you are behind a proxy
+
+$sudo env ARCHFLAGS='-arch x86_64' env http_proxy="http://web-proxy:8088"  gem install pg -- --with-pg-include=/Library/PostgreSQL/9.0/include/ --with-pg-lib=/Library/PostgreSQL/9.0/lib/
+
+
+== Postgresql Config
+
+1. create user knorbit using PGAdmin 
+2. crreate DB knorbit and assign user knorbit as owner 
+
+
+== Postgress CentOS
+
+$sudo yum install postgresql
+$sudo yum install postgresql-server
+$$sudo yum install postgresql-devel
+
+http://www.postgresql.org/docs/8.3/interactive/tutorial-accessdb.html
+
+$sudo chkconfig postgresql on
+$sudo service postgresql initdb
+$sudo service postgresql start
+$sudo su - postgres
+
+== Create Knorbit user and Knorbit DB
+http://www.postgresql.org/docs/8.3/interactive/database-roles.html
+$createuser knorbit
+$createdb knrobit -O knorbit
+
+== Install PG gem
+$sudo gem install pg -- --with-pg-include=/usr/include --with-pg-lib=/usr/lib/pgsql/
+
+== Enable password authentication to Postgress 
+http://www.cyberciti.biz/faq/psql-fatal-ident-authentication-failed-for-user/
+$sudo vim /var/lib/pgsql/data/pg_hba.conf
+
+Add trust instead of IDENT 
+
+$sudo service postgresql restart

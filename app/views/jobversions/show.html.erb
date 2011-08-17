@@ -1,0 +1,21 @@
+<div>
+	<table>
+		<%if !@versions.nil?%>
+			<% @versions.each do |version|%>
+			<tr><td>
+				<%= link_to version.version_name+' (v'+version.version_wiki+')', @job.wiki+'?rev='+version.version_wiki %> was saved at <%= time_ago_in_words(version.created_at)%>.
+			</td></tr>
+			<% end%>
+		<% end%>
+	</table>
+</div>
+<div>
+	<%= form_for(:jobversions, @jobversions, :url => { :action => "create" }) do |f| %>
+		<%= f.label(:version_name, "Write the name of the new copy: ") %>
+	  	<%= f.text_field(:version_name ) %><br>
+		<%= hidden_field_tag(:version_wiki, @response) %>
+		<%= hidden_field_tag(:job_id, params[:id]) %>
+		<%= f.submit("Save") %>
+	<% end %>
+</div>
+<%= @webhome %>

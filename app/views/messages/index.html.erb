@@ -1,0 +1,38 @@
+<h1>Inbox</h1>
+<style>
+	#rounded-corner tbody tr:hover td {
+		background:white;
+	}
+</style>
+<table class="table">
+	<thead>
+		<tr>
+			<th>Peer</th>
+			<th>User Name</th>
+			<th>Subject</th>
+			<th>Send</th>
+		</tr>
+	</thead>
+		
+	<tbody>
+		<% @messages.each do |message| %>
+			<% if message.read == true %>
+				<tr onclick="window.location = '/messages/'+<%= message.id %>;" >
+					<td><%= gravatar_for message.from %></td>
+				    <td><%= message.from.name %></td>
+				    <td><%= message.subject %></td>
+					<td>Received <%= time_ago_in_words(message.created_at) %> ago.</td>
+				</tr>
+			<% else %>
+		  		<tr onclick="window.location = '/messages/'+<%= message.id %>;">
+					<td style="background:#e0fdd9;"><%= gravatar_for message.from %></td>
+				    <td style="background:#e0fdd9;"><%= message.from.name %></td>
+				    <td style="background:#e0fdd9;"><%= message.subject %></td>
+					<td style="background:#e0fdd9;">Received <%= time_ago_in_words(message.created_at) %> ago.</td>
+				</tr>
+			<% end %>
+					
+			  		
+		<% end %>
+  	</tbody>
+</table>

@@ -1,0 +1,49 @@
+<div id="signup_box">
+<h2>Join <span class="green">knOrbit</span> today!</h2>
+<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+  <%= devise_error_messages! %>
+  	<table>
+		<tr>
+			<td><label for="user_name">User Name</label></td>
+			<td><%= f.text_field :name%></td>
+		</tr>
+		<tr>
+			<td><%= f.label :email %></td>
+			<td><%= f.email_field :email %></td>
+		</tr>
+		<tr>
+			<td><%= f.label :password %></td>
+			<td><%= f.password_field :password %></td>
+		</tr>
+		<tr>
+			<td><%= f.label :password_confirmation %></td>
+			<td><%= f.password_field :password_confirmation %></td>
+		</tr>
+	</table>
+  	<p><%= f.submit "Sign up", :class => "button" %></p>
+  	<%- if devise_mapping.omniauthable? %>
+		<ul id="social-icons">
+			
+		  <%- resource_class.omniauth_providers.each do |provider| %>
+			<li><%= link_to image_tag("social-icons/#{provider}_32.png", :alt => "Sign in with #{provider.to_s.titleize}"), omniauth_authorize_path(resource_name, provider) %></li>
+		  <% end -%>
+		</ul>
+		<div class="clear"></div>
+	<% end -%>
+<% end %>
+</div>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-7279667-5']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+<div id="imagehome"><%= image_tag("letrasOneSpace.png", :alt => "Sample App") %></div>

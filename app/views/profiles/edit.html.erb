@@ -1,0 +1,24 @@
+<% if @profile.user.id == current_user.id %>
+	<%= form_for @profile, :html => { :onsubmit => "return validateskills();" } do |f| %>
+	  	<% if @profile.errors.any? %>
+	    	<div id="error_explanation">
+	      		<h2><%= pluralize(@profile.errors.count, "error") %> prohibited this job from being saved:</h2>
+	
+	      		<ul>
+			      	<% @profile.errors.full_messages.each do |msg| %>
+			        	<li><%= msg %></li>
+			      	<% end %>
+		      	</ul>
+	    	</div>
+	  	<% end %>
+	  	
+	  	<%= render ( :template => 'jobs/_skills', :locals => {:f => f} ) %>	
+	  	
+	<% end %>
+<%else%>
+	<div id="noticesuccess">
+		<% if @invitation.nil? %>
+			<%= image_tag("blocked.png") %><span style="color: red"> Invalid access.</span><br/>
+		<% end %>
+	</div>
+<%end%>

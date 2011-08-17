@@ -1,0 +1,700 @@
+/* tooltip styling. by default the element to be styled is .tooltip  */
+.tooltip {
+	display:none;
+	background:transparent url(/images/tooltip/black_arrow.png);
+	font-size:12px;
+	height:70px;
+	width:160px;
+	padding:25px;
+	color:#fff;	
+}
+
+/* style the trigger elements */
+#demo img {
+	border:0;
+	cursor:pointer;
+	margin:0 8px;
+}
+
+
+html, body {
+    min-height: 99%; 
+    width: 100%;
+    height: 99%;
+    margin: 0;
+    padding: 0;
+}
+
+html>body .knorbit {
+    height: auto; 
+}
+
+
+#main {
+    height: auto;
+    padding-bottom: 200px;   /* padding of the footer */
+    margin: 0 auto;
+	top:0;
+	left:0;
+	width:100%;
+	padding-left:0;
+	padding-right:0;
+}
+
+/* Tables */
+
+/*Header 1*/
+
+.header1 {
+	margin-top: 1px;
+	height: 10px;
+}
+
+.header1 ul li {
+	list-style-type: none;
+	display: inline-block;
+	padding-left: 15px;
+	padding-right: 15px;
+	text-align: center;
+	float: right;
+}
+
+/*Header 2*/
+
+.header2 {
+	margin-top: 12px;
+	background-color: #96d43c;
+	height: 43px;
+}
+
+.logo {
+	margin-top: 0px;
+	padding-left: 5px;
+	padding-right: 5px;
+	background-color: #ffffff;
+	margin-left: 20px;
+	margin-right: 20px;
+	border: none;
+	width: 145px;
+	height: 50px;
+	float: left;
+}
+.menu2 {
+	position: absolute;
+	margin-left: 150px;
+}
+
+.menu2 ul li {
+	list-style-type: none;
+	display: inline-block;
+	padding-top: 0px;
+	text-align: center;
+	float: left;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.menu2 ul li a {
+	padding-bottom: 0px;
+	padding-right: 39px;
+	color: white;
+}
+
+.menu2 ul li a:hover {
+	color: black;
+}
+
+.divsearch {
+	margin-top: 23px;
+	-moz-border-radius: 15px;
+	-webkit-border-radius: 15px;
+	border-radius: 15px; 
+	background-color: #96D43C;
+	width: 254px;
+	height: 25px;
+	text-align: right;
+	padding: 3px 3px 1px 3px;
+}
+
+#search {
+	font-size: 12px !important;
+	-moz-border-radius: 15px;
+	-webkit-border-radius: 15px;
+	border-radius: 15px;
+	width: 200px;
+	height: 22px;
+}
+.bt_active {
+	color: black !important;
+}
+
+.bt_H {
+	background-position: -690px 5px;
+	padding-right: 70px !important;
+}
+.bt_H_hover {
+	background-position: -690px 90%;
+	padding-right: 70px !important;
+}
+.bt_MN {
+	background-position: -47px 6px;
+	padding-right: 129px;
+}
+.bt_MN_hover {
+	background-image: url(../images/menu.png);
+	background-position: -47px 90%;
+	padding-right: 129px;
+}
+.bt_MT {
+	background-position: -195px 6px;
+	padding-right: 129px;
+}
+.bt_MT_hover {
+	background-position: -195px 90%;
+	padding-right: 129px;
+}
+.bt_PR {
+	background-position: -350px 5px;
+	padding-right: 129px;
+}
+.bt_PR_hover {
+	background-position: -350px 90%;
+	padding-right: 129px;
+}
+.bt_AC {
+	background-position: -505px 5px;
+	padding-right: 129px;
+}
+.bt_AC_hover {
+	background-position: -505px 90%;
+	padding-right: 129px;
+}
+
+/* Header 3 */
+.header3 {
+	float: right;
+	margin-bottom: 35px;
+}
+
+/* Header 3 - User menu */
+
+#user-popup img {
+	position: absolute;
+}
+
+.star, .flag {
+	-webkit-border-radius: 5px;
+   	-moz-border-radius: 5px;
+   	border-radius: 15px;
+	margin-top: 20px;
+	border: #96d43c 4px solid;
+	width: 200px;
+	height: 20px;
+	cursor: pointer;
+}
+.star div, .flag div{
+	position: absolute;
+	margin-left: 20px;
+	margin-top: -15px;
+}
+.star div img, .flag div img{
+	-webkit-border-radius: 5px;
+   	-moz-border-radius: 5px;
+   	border-radius: 15px;
+}
+
+.star p, .flag p {
+	font-size: 12px;
+	margin-top: 4px;
+	margin-left: 80px;
+}
+
+.flag {
+	top: 300px;
+	cursor: pointer;
+}
+/* Notice */
+
+.noticesuccess {
+	background: #ffffff;
+}
+
+/* Content */
+.content {
+    padding-top:80px;
+}
+
+body {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 15px;
+  	background: #ffffff;
+	margin: 0px;
+	padding: 0px;
+}
+
+.knorbit {
+	min-width: 1024px;
+	width:expression(document.body.clientWidth < 1024? "1024px");
+  	width: 96%;
+	margin: 0px auto 0px auto;
+	position: relative;
+}
+
+/* Content - Links*/
+
+a:link {
+	color: #96d43c;
+	text-decoration: none;
+	list-style-type: none;
+}
+a:visited {
+	color: #96d43c;
+	text-decoration: none;
+}
+
+/* Content - Inputs */
+
+input[type='text'], textarea {
+	letter-spacing:2px;
+	font-weight: bold;
+	font-size: 12px;
+  	color: #000000;
+  	padding: 1px 10px 1px 10px;
+}
+
+input[type='submit'] {
+	cursor: hand;
+}
+
+select {
+	background-color: #e0f0c0;
+	font-weight: bold;
+	font-size: 12px;
+  	color: #000000;
+  	padding: 1px 10px 1px 10px;
+}
+
+.inputchangename {
+	width: 86%; 
+}
+
+/* Footer */
+
+#footer {
+    position: absolute;
+    margin-bottom: 10px;
+    bottom: 0;
+    width: 100%;
+    text-align: right;
+    background-color: #96d43c;
+	height: 30px;
+	-moz-border-radius: 15px;
+    border-radius: 15px;
+    behavior:url(border-radius.htc);
+}
+
+#footer ul {
+	margin-top: 7px;
+}
+
+#footer ul li {
+	list-style-type: none;
+	display: inline-block;
+	padding-right: 30px;
+}
+
+#footer ul li a {
+	color: black;
+	letter-spacing: 3px;
+	font-weight: bold;
+}
+
+/* Home (Dashboard) */
+
+/* Home (Dashboard) - Profile Tables */
+
+.showborder td, .showborder tr {
+	border: solid 1px black;
+	height: 40px;
+	padding-left: 5px;
+	width: 35%;
+	
+}
+
+/* Home (Dashboard) - User Tables */
+
+.table {
+	width: 100%;
+	text-align: left;
+	font-size: 18px;
+	margin-bottom: 30px;
+	border-collapse: collapse;
+}
+	
+.table th {
+	font-size: 20px;
+	font-weight: normal;
+	color:#96d43c;
+	padding:6px;
+	border-bottom:2px solid #96d43c;
+	text-transform: uppercase;
+	text-align: center;
+}
+
+.table td {
+	border-bottom:1px solid #96d43c;
+	color:#333333;
+	padding:6px 8px;
+	cursor:pointer;
+	text-align: center;
+}
+
+.table tbody tr:hover td {
+	background:#e0fdd9;
+}
+
+/* Home (Dashboard) - User pop-up */
+
+.onscreen {
+	display: block;
+}
+
+.offscreen {
+	display: none;
+}
+
+
+li {
+	list-style-type: none;
+}
+.edit_content {
+	min-height: 15px;
+}
+
+.edit_content ul li {
+	list-style-type: disc;
+}
+
+.edit_content ol li, #index ol li {
+	list-style-type: decimal;
+}
+
+.edit_content table tbody td div{
+	padding: 0 10px 0 10px;
+}
+
+.edit_content table, .edit_content table tbody td {
+	border: solid 1px;
+	border-spacing: 0px;
+}
+
+
+
+/* New/Show Job */
+
+.jobtitle {
+	background-color: #333333;
+	float:left; color: #96d43c;
+	margin-top: 0.3%;
+	padding: 10px 25px 10px 25px; 
+	-moz-border-radius-topleft: 15px;
+	-webkit-border-top-left-radius: 15px;
+	border-top-left-radius: 15px;
+	-moz-border-radius-topright: 15px;
+	-webkit-border-top-right-radius: 15px;
+	border-top-right-radius: 15px;
+}
+
+.contenttab {
+	padding: 10px;
+	border: solid 1px black;
+}
+
+.button, .button:link, .button:visited {
+	min-width: 170px;
+	width: auto !important;
+	width: 170px; 
+	height: 25px;
+   	background: #96d43c;
+   	-webkit-border-radius: 8px;
+   	-moz-border-radius: 8px;
+   	border-radius: 8px;
+   	border: none;
+   	color: black;
+   	font-size: 16px;
+   	text-decoration: none;
+   	vertical-align: middle;
+	cursor:pointer;
+	text-align: center;
+	padding: 2px 6px 3px;
+	-webkit-box-align: center;
+	
+	display: inline-block;
+  	text-decoration: none;
+  	position: relative;
+  	margin-bottom: 10px;
+}
+
+.button:hover { /* el efecto hover */
+	top: -3px;
+	height: 30px;
+	border: 4px solid #96d43c;
+	background: #ffffff;
+	margin-bottom: 5px;
+}
+
+.button:active{  /* el efecto click */
+  	top: 0px;
+}
+
+.button_disable, .button_disable:link {
+	width: 170px; 
+	height: 25px;
+   	background: #96d43c;
+   	-webkit-border-radius: 8px;
+   	-moz-border-radius: 8px;
+   	border-radius: 8px;
+   	border: none;
+   	color: black;
+   	font-size: 16px;
+   	text-decoration: none;
+   	vertical-align: middle;
+	cursor:default;
+	text-align: center;
+	padding: 2px 6px 3px;
+	-webkit-box-align: center;
+	
+	display: inline-block;
+  	text-decoration: none;
+  	position: relative;
+  	margin-bottom: 10px;
+  	
+	filter:alpha(opacity=46);
+    -moz-opacity:0.46;
+    -khtml-opacity: 0.46;
+     opacity: 0.46;
+}
+
+/* Templates */
+
+.templates {
+	-webkit-border-radius: 5px;
+   	-moz-border-radius: 5px;
+   	border-radius: 15px;
+	border: #96d43c 4px solid;
+	padding: 10px;
+}
+
+/* Skills */
+
+.subcategory {
+	display: none;
+	width: 90%;
+ 	padding: 0px;
+	text-align: justify;
+}
+
+#tags-edit table tbody tr td div.content, #invmynetwork{
+	border: 3px solid #96d43c;
+	-moz-border-radius: 15px;
+	-webkit-border-radius: 15px;
+	border-radius: 15px;
+	padding: 15px 15px 15px 15px;
+	cursor: default;
+}
+
+#tags-edit table tbody tr td div input {
+	float: right;
+	width: 85%;
+}
+
+#tags-edit table tbody tr td div textarea {
+	float: right;
+	width: 85%;
+	resize: none;
+}
+
+.example {
+	font-style: italic;
+	margin: 10px 25px 20px 0;	
+}
+
+.cuadrado {
+	position: absolute;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	width: 30px;
+	background: #96d43c;
+	height: 25px;
+	margin: 15px -15px;
+}
+
+.green {
+	color: #96d43c;
+}
+.red {
+	color: #FF0000;
+}
+
+.logName {
+	color: #96d43c;
+	background-color: #222222;
+	position: right;
+}
+
+/* Invitation tab */
+
+.invitationgreenbox {
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	background: #96d43c;
+	width: 42%;
+	height: 220px;
+	padding: 1% 1% 1% 5%;
+	margin-bottom: 15px;
+}
+
+/* Account */
+
+#identification table tr td, #preferences table tr td {
+	padding-right: 20px;
+}
+
+#preferences table tr td {
+	padding-bottom: 10px;
+}
+
+.account {
+	-webkit-border-radius: 5px;
+   	-moz-border-radius: 5px;
+   	border-radius: 15px;
+	border: #96d43c 4px solid;
+	padding: 15px;
+	width: 800px;
+}
+
+
+/* User show page */
+
+table.profile {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+td.main {
+  width: 70%;
+  padding: 1em;
+}
+
+td.sidebar {
+  width: 30%;
+  padding: 1em;
+  vertical-align: top;
+  background: #ffc;
+}
+
+.user .gravatar {
+	float: left;
+  	margin-bottom: 15px;
+}
+
+.profile img.gravatar {
+  	border: 1px solid #999;
+  	margin-bottom: -15px;
+}
+
+/* Invalid form */
+
+.field_with_errors {
+  margin-top: 0px;
+  padding: 2px;
+  background-color: red;
+  display: table;
+}
+
+.field_with_errors label {
+  color: #fff;
+}
+
+#error_explanation {
+  width: 400px;
+  border: 2px solid red;
+  padding: 7px;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  background-color: #fff;
+}
+
+#error_explanation h2 {
+  text-align: left;
+  font-weight: bold;
+  padding: 5px 5px 5px 15px;
+  margin: -7px;
+  background-color: #c00;
+  color: #fff;
+}
+
+#error_explanation p {
+  color: #333;
+  margin-bottom: 0;
+  padding: 5px;
+}
+
+#error_explanation ul li {
+  list-style: square;
+}
+
+/* No focus link*/
+
+*:focus{
+    outline: none !important;
+}
+
+/*Diff*/
+.diff{overflow:auto;}
+.diff ul{background:#fff;overflow:auto;font-size:13px;list-style:none;margin:0;padding:0;display:table;width:100%;}
+.diff del, .diff ins{display:block;text-decoration:none;}
+.diff li{padding:0; display:table-row;margin: 0;height:1em;}
+.diff li.ins{background:#dfd; color:#080}
+.diff li.del{background:#fee; color:#b00}
+.diff li:hover{background:#ffc}
+/* try 'whitespace:pre;' if you don't want lines to wrap */
+.diff del, .diff ins, .diff span{white-space:pre-wrap;}
+.diff del strong{font-weight:normal;background:#fcc;}
+.diff ins strong{font-weight:normal;background:#9f9;}
+
+
+/* Tabs css*/ 
+.tabs-bottom { position: relative;  } 
+.tabs-bottom .ui-tabs-panel { height: 140px; overflow: auto; } 
+.tabs-bottom .ui-tabs-nav { position: absolute !important; left: 0; bottom: 0; right:0; padding: 0 0.2em 0.2em 0;  } 
+.tabs-bottom .ui-tabs-nav li { margin-top: -2px !important; margin-bottom: 1px !important; border-top: none; border-bottom-width: 1px; }
+.ui-tabs-selected{ border: 1px solid green; border-top: none !important; }
+
+
+/* Accordion icon */
+.defaultIcon {
+	background-image: url(http://opencoffee.lnxteam.org/trac/export/819/trunk/sandbox/ThemingSystem/ThemeSelector/theme/theme_markus/style/spin_downArrow_off.png) !important;
+	width: 25px;
+	height: 25px;
+}
+
+.selectedIcon {
+	background-image: url(/images/spindown-open.png) !important;
+	width: 25px;
+	height: 25px;
+}
+
+/* Ratio buttons style */
+.cb-enable, .cb-disable, .cb-enable span, .cb-disable span { background: url(../images/switch.gif) repeat-x; display: block; float: left; }
+.cb-enable span, .cb-disable span { line-height: 30px; display: block; background-repeat: no-repeat; font-weight: bold; }
+.cb-enable span { background-position: left -90px; padding: 0 10px; }
+.cb-disable span { background-position: right -180px;padding: 0 10px; }
+.cb-disable.selected { background-position: 0 -30px; }
+.cb-disable.selected span { background-position: right -210px; color: #fff; }
+.cb-enable.selected { background-position: 0 -60px; }
+.cb-enable.selected span { background-position: left -150px; color: #fff; }
+.switch label { cursor: pointer; }
+.switch input { display: none; }

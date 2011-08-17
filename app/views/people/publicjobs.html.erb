@@ -1,0 +1,62 @@
+<% if !notice.nil? %>
+	<div class="noticesuccess">
+		<%= image_tag("visto.png", :alt => "Sample App") %><span class="green"><%= notice %></span><hr />
+	</div>
+	<br/>
+<% end%>
+<input type="button" value="Back to My Network" class="button" onclick="location.href='<%=people_path%>'">
+<h2 class="green">Orbit of <%= @user.name %> <%= gravatar_for(@user, :size=>40) %></h2>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>Orbits</th>
+			<th>Post date</th>
+			<th>Status</th>
+			<th>My role</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @jobs.each do |job| %>	
+			<tr class="showJobs" id="<%= job.id %>">
+				<td><%= truncate(job.name, :length => 30)%></td>
+			    <td><%= if job.status != "draft"
+			    		job.date - ( job.duration / 24 ) 
+			    	end %>    	
+			    </td>
+			    <td><%= job.status %></td>
+			    <td><% if !Contribution.where(:user_id => current_user.id, :job_id => job.id)[0].nil? %>
+						Peer
+					<% elsif !Sharedjob.where(:to_email => current_user.email, :job_id => job.id )[0].nil?%>
+						Reader
+					<% else %>
+						None
+					<% end %>
+				</td>
+				<ul style="text-align: center;" class="showJobs-popup-<%= job.id %>" title="<%= truncate(job.name, :length => 30)%>">
+					<input type="button" value="View/Edit content" class="button" onclick="window.location.href='<%=job.wiki%>';">
+				</ul>
+				
+				<script>
+					/* Pop-up Dashboard - My Contributions*/
+						
+					$( ".showJobs-popup-<%= job.id %>" ).dialog({
+						autoOpen: false,
+						height: 240,
+						minWidth: 250,
+						draggable: false,
+						resizable: false,
+						modal: true,
+						stack: false
+					});
+					
+					$( "#<%= job.id %>").click(function() {
+						$( ".showJobs-popup-<%= job.id %>" ).dialog( "open" );
+						return false;
+					});
+					
+				</script>
+			</tr>	
+		<% end %>
+	</tbody>
+</table>

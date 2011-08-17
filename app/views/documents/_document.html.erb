@@ -1,0 +1,14 @@
+<p>
+	<table>
+	  <tr>
+		<td>
+	    <b>Name:</b>
+		  <%= document.name %>
+		</td>
+		<td>
+			<%= link_to "Show", '/spaces/'+@space.wiki_name+'/documents/'+document.id.to_s %> 
+		</td>
+	  </tr>
+	</table>
+</p>	
+

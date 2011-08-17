@@ -1,0 +1,28 @@
+<table style="width: 100%;">
+	<tr>
+		<td style="width: 40px;">Title</td>
+		<td><%= f.text_field :name, :style => "width: 100%;", :maxlength => "100"%></td>
+	</tr>
+</table>
+<table><tr><td>Description</td></tr></table>
+<table style="width: 100%;">
+	<tr>
+		<td style="width: 40px;"></td>
+		<td><%= f.text_area :description, :style => "width:100%; height:100px;" %></td>
+	</tr>
+</table>
+<br />
+<table>
+	<tr>
+		<td>Contribution period (in weeks): </td>
+		<td><%= f.select :duration,	['4','3','2','1'] %></td>
+	</tr>
+	<tr>
+		<td>Orbit visibility: </td>
+		<td>
+			<%= f.radio_button :public, "Yes", :checked => "checked" %> Public /
+			<%= f.radio_button :public, "No" %> Private
+		</td>
+	</tr>
+</table><br />
+<input id="job_submit" name="commit" type="submit" value="Save" class="button">

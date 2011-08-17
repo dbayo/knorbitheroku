@@ -1,0 +1,170 @@
+<% if !notice.nil? %>
+	<div class="noticesuccess">
+		<%= image_tag("visto.png", :alt => "Sample App") %><span class="green"><%= notice %></span><hr />
+	</div>
+	<br/>
+<% end%>
+<table class="table">
+	<thead>
+		<tr>
+			<th style="width:20%;">Orbit</th>
+			<th style="width:15%;">Sponsorship</th>
+			<th style="width:15%;">Closing date</th>
+			<th style="width:15%;">Size</th>
+			<th style="width:15%;">Number of contributors</th>
+			<th style="width:15%;">My role</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @jobs.each do |job| %>
+			<% @space = Space.where(:wiki_name => job.wikispace)[0] %>
+			<% @size = 0 %>
+			<% @space.documents.each do |doc| %>
+				<% @size = @size + doc.content.size unless doc.content.nil?%>
+			<% end %>
+			<tr id="<%= job.id %>">
+				<td><%= truncate(job.name, :length => 22)%></td>
+			    <td></td>
+			    <td><%= job.date %></td>
+			    <td>
+			    	
+			    	<% if @size < 1000 %>
+			    		<%= @size %> Kb
+			    	<% else %>
+			    		<%= (@size.to_f / 1000).round(2) %> Mb
+			    	<% end %>
+			    </td>
+			    <td><%= Contribution.find(:all, :conditions => ['job_id = ?', job.id]).count %></td>
+			    <td>Owner</td>
+				<ul style="text-align: center;" class="Mytrail-popup-<%= job.id %>" title="Orbit:  <%= truncate(job.name, :length => 22)%>">
+					<input type="button" value="Orbit Attributes" class="button" onclick="location.href='<%='/jobs/'+job.id.to_s+'#tabs-0'%>'"><br />
+					<input type="button" value="Replicate orbit" class="button" onclick="location.href='<%=replication_job_path(job)%>'"><br />
+					<input type="button" value="View/Comment" class="button" onclick="location.href='<%=job.wiki%>'"><br />
+					<input type="button" value="Invite a reader" class="button" onclick="location.href='<%='/sharejob/'+job.id.to_s%>'"><br />
+					<input type="button" value="Generate link" class="button" onclick="alert(document.domain+':'+location.port+'<%=job.wiki%>');"><br />
+					<input type="button" value="Remove" class="button" onclick="location.href='<%='/contributions/'+job.id.to_s+'/removeowner/'+current_user.id.to_s%>'"><br />
+				</ul>
+				
+				<script>
+					/* Pop-up Dashboard - My Contributions*/
+						
+					$( ".Mytrail-popup-<%= job.id %>" ).dialog({
+						autoOpen: false,
+						height: 350,
+						width: 350,
+						draggable: false,
+						resizable: false,
+						modal: true,
+						stack: false
+					});
+					
+					$( "#<%= job.id %>").click(function() {
+						$( ".Mytrail-popup-<%= job.id %>" ).dialog( "open" );
+						return false;
+					});
+					
+				</script>
+			</tr>	
+		<% end %>
+		<% if !@contributions.nil? %>
+			<% @contributions.each do |contribution| %>
+				<% if contribution.job.status == 'closed' or contribution.job.status == 'System' %>
+					<tr id="<%= contribution.job.id %>">
+						<td><%= truncate(contribution.job.name, :length => 22)%></td>
+					    <td><%= contribution.job.date - ( contribution.job.duration / 24 ) %></td>
+					    <td><%= contribution.job.date %></td>
+					    <td>
+					    	<% @reward = Rewards.where(:job_id => contribution.job.id, :contributor_id => current_user.id)[0] %>
+					    	<% if !@reward.nil? %>
+					    		<%= @reward.points%>
+					    	<% else %>
+					    		No rewarded
+					    	<% end %>
+					    </td>
+					    <td><%= Contribution.find(:all, :conditions => ['job_id = ?', contribution.job.id]).count %></td>
+					    <td>
+					    	Peer
+					    </td>
+						<ul style="text-align: center;" class="Mytrail-popup-<%= contribution.job.id %>" title="Orbit: <%= truncate(contribution.job.name, :length => 22)%>">
+							<input type="button" value="Replicate Orbit" class="button" onclick="location.href='<%=replication_job_path(contribution.job)%>'"><br />
+							<input type="button" value="View/Comment" class="button" onclick="location.href='<%=contribution.job.wiki%>'"><br />
+							<input type="button" value="Invite a reader" class="button" onclick="location.href='/sharejob/<%=contribution.job.id.to_s%>'"><br />
+							<input type="button" value="Generate link" class="button" onclick="alert(document.domain+':'+location.port+'<%=contribution.job.wiki%>');"><br />
+							<input type="button" value="Remove" class="button" onclick="location.href='<%='/contributions/'+contribution.job.id.to_s+'/removeowner/'+current_user.id.to_s+'?frommytrail=true'%>'"><br />
+							<input type="button" value="Send a message to owner" class="button" onclick="location.href='<%='/people/'+contribution.job.user_id.to_s+'/mail?frompage=mytrail'%>'"><br />
+						</ul>
+						
+						<script>
+							/* Pop-up Dashboard - My Contributions*/
+								
+							$( ".Mytrail-popup-<%= contribution.job.id %>" ).dialog({
+								autoOpen: false,
+								height: 370,
+								width: 340,
+								draggable: false,
+								resizable: false,
+								modal: true,
+								stack: false
+							});
+							
+							$( "#<%= contribution.job.id %>").click(function() {
+								$( ".Mytrail-popup-<%= contribution.job.id %>" ).dialog( "open" );
+								return false;
+							});
+							
+						</script>
+					</tr>
+				<% end%>	
+			<% end %>
+		<% end %>
+		<% if !@sharedjobs.nil? %>
+			<% @sharedjobs.each do |sharedjob| %>
+				<tr id="<%= sharedjob.job.id %>">
+					<td><%= truncate(sharedjob.job.name, :length => 22)%></td>
+				    <td><%= sharedjob.job.date - ( sharedjob.job.duration / 24 ) %></td>
+				    <td><%= sharedjob.job.date %></td>
+				    <td>
+				    	<% @reward = Rewards.where(:job_id => sharedjob.job.id, :contributor_id => current_user.id)[0] %>
+				    	<% if !@reward.nil? %>
+				    		<%= @reward.points%>
+				    	<% else %>
+				    		No rewarded
+				    	<% end %>
+				    </td>
+				    <td><%= Contribution.find(:all, :conditions => ['job_id = ?', sharedjob.job_id]).count %></td>
+				    <td>
+						Reader
+				    </td>
+
+					<ul style="text-align: center;" class="Mytrail-popup-<%= sharedjob.job.id %>" title="Orbit: <%= truncate(sharedjob.job.name, :length => 22)%>">
+						<input type="button" value="View/Comment" class="button" onclick="location.href='<%=sharedjob.job.wiki%>'"><br />
+						<input type="button" value="Invite a reader" class="button" onclick="location.href='/sharejob/<%=sharedjob.job.id.to_s%>'"><br />	
+						<input type="button" value="Generate link" class="button" onclick="alert(document.domain+':'+location.port+'<%=sharedjob.job.wiki%>');"><br />	
+						<input type="button" value="Remove" class="button" onclick="location.href='<%='/contributions/'+sharedjob.job.id.to_s+'/removereader/'+current_user.id.to_s%>'"><br />
+						<input type="button" value="Send a message to owner" class="button" onclick="location.href='<%='/people/'+sharedjob.job.user_id.to_s+'/mail?frompage=mytrail'%>'"><br />
+					</ul>
+					
+					<script>
+						/* Pop-up Dashboard - My Contributions*/
+							
+						$( ".Mytrail-popup-<%= sharedjob.job.id %>" ).dialog({
+							autoOpen: false,
+							height: 340,
+							width: 340,
+							draggable: false,
+							resizable: false,
+							modal: true,
+							stack: false
+						});
+						
+						$( "#<%= sharedjob.job.id %>").click(function() {
+							$( ".Mytrail-popup-<%= sharedjob.job.id %>" ).dialog( "open" );
+							return false;
+						});
+						
+					</script>
+				</tr>
+			<% end %>
+		<% end %>
+	</tbody>
+</table>

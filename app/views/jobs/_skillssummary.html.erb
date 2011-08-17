@@ -1,0 +1,108 @@
+<div id="tags-edit">
+	<table style="width:100%;">
+		<thead>
+			<tr>
+				<th style="width:40%;" class="green">Skills, knowledge & interests</th>
+				<th></th>
+				<th class="green">In more detail</th>
+			</tr>
+		</thead>
+		<tbody>
+			<%if !@job.keyword1.nil? and !@job.keyword1.empty? %>
+			<tr>
+				<td valign="top">
+					<div class="content">
+						<%= @job.keyword1 %>
+					</div>	
+	  			</td>
+	  			<td class="cuadrado"></td>
+				<td>
+					<div class="content">
+						<ol>
+							<%= @job.qualifier1.split(",").each do |qualifier| %>
+								<li><%= qualifier %></li> 
+							<% end %>
+						</ol> 
+					</div>
+				</td>
+			</tr>
+			<%end%>
+			<%if !@job.keyword2.nil? and !@job.keyword2.empty? %>
+			<tr>
+				<td valign="top">
+					<div class="content">
+						<%= @job.keyword2 %>
+					</div>			
+				</td>
+				<td  class="cuadrado"></td>	
+				<td>
+					<div class="content">
+						<ol>
+							<%= @job.qualifier2.split(",").each do |qualifier| %>
+								<li><%= qualifier %></li> 
+							<% end %>
+						</ol>
+					</div>
+				</td>
+			</tr>
+			<%end%>
+			<%if !@job.keyword3.nil? and !@job.keyword3.empty? %>
+			<tr>
+				<td valign="top">
+					<div class="content">
+						<%= @job.keyword3 %>
+					</div>
+	  			</td>
+	  			<td  class="cuadrado"></td>	
+				<td>
+					<div class="content">
+						<ol>
+							<%= @job.qualifier3.split(",").each do |qualifier| %>
+								<li><%= qualifier %></li> 
+							<% end %>
+						</ol>
+					</div>
+				</td>
+			</tr>
+			<%end%>
+			<%if !@job.keyword4.nil? and !@job.keyword4.empty? %>
+			<tr>
+				<td valign="top">
+					<div class="content">
+						<%= @job.keyword4 %>
+					</div>
+				</td>
+				<td  class="cuadrado"></td>	
+				<td>
+					<div class="content">
+						<ol>
+							<%= @job.qualifier4.split(",").each do |qualifier| %>
+								<li><%= qualifier %></li> 
+							<% end %>
+						</ol>
+					</div>
+				</td>
+			</tr>
+			<%end%>
+			<%if !@job.keyword5.nil? and !@job.keyword5.empty? %>
+			<tr>
+				<td valign="top">
+					<div class="content">
+						<%= @job.keyword5 %>
+					</div>
+				</td>
+				<td  class="cuadrado"></td>
+				<td>
+					<div class="content">
+						<ol>
+							<%= @job.qualifier5.split(",").each do |qualifier| %>
+								<li><%= qualifier %></li> 
+							<% end %>
+						</ol>
+					</div>
+				</td>
+			</tr>
+			<%end%>
+		</tbody>	
+	</table>	
+</div>

@@ -1,0 +1,266 @@
+<% if !notice.nil? %>
+	<div class="noticesuccess">
+		<%= image_tag("visto.png", :alt => "Sample App") %><span class="green"><%= notice %></span><hr />
+	</div>
+	<br/>
+<% end%>
+<style>
+	.groups {
+		 padding-left: 30px !important;
+	}
+	.trashed {
+		background-image: url(/images/fulltrash.png) !important;
+	}
+	.follower-active {
+		background:#e0fdd9;
+	}
+	.follower-hover {
+		border: 5px solid #96d43c;
+	}
+	#add_group {
+		font-size: 12px;
+	}
+</style>
+<div style="position: absolute; margin-left: 90%; margin-top: 15px; width: 100px;">
+	<table id="groupstable" class="table">
+		<tr class="groups"><th>Groups</th></tr>
+		<tr><td class="groups"><%= image_tag("move.png", :style => "position:absolute; margin-left: -25px;") %>None</td></tr>
+		<tr><td class="groups"><%= image_tag("move.png", :style => "position:absolute; margin-left: -25px;") %>Favorite</td></tr>
+		<tr><td class="groups"><%= image_tag("move.png", :style => "position:absolute; margin-left: -25px;") %>Blocked</td></tr>
+		<% Group.where(:user_id => current_user.id).each do |group| %>
+             <tr><td class="newgroups groups"><%= image_tag("move.png", :style => "position:absolute; margin-left: -25px;") %><%=group.name%></td></tr>
+        <% end %>
+        <tr><td id="add_group">+ ADD GROUP</td></tr>
+	</table>
+	<div id="trash" style="width: 25px; padding:53px 50px 22px 0px; background-image: url(/images/emptytrash.png)"></div>
+</div>
+
+<div id="popup_group" title="Add New Group">
+	<form>
+		<fieldset class="ui-helper-reset">
+			<label for="tab_title">Name</label>
+			<input type="text" name="tab_title" id="tab_title" value="" class="ui-widget-content ui-corner-all" style="border:solid 1px; float: right; width:80%;"/>
+		</fieldset>
+	</form>
+</div>
+
+<script type="text/javascript">
+	$(function() {
+		var title = $( "#tab_title" ),
+		allFields = $( [] ).add( title );
+		arrayPagesDeleted = new Array();
+		arrayChangedTitles = new Array();
+		// modal dialog init: custom buttons and a "close" callback reseting the form inside
+		var $dialog = $( "#popup_group" ).dialog({
+			autoOpen: false,
+			modal: true,
+			buttons: {
+				Add: function() {
+					if ($( '#tab_title' ).val() == "") {
+						alert("title can not be empty");
+						return false;
+					}
+					if( $('#accordion').sortable('toArray').toString().search($( '#tab_title' ).val()) != -1) {
+						alert("There is other section with the same name");
+						return false;
+					}
+					addnewgroup( $( '#tab_title' ).val());					
+					$( this ).dialog( "close" );
+				},
+				Cancel: function() {
+					$( this ).dialog( "close" );
+				}
+			},
+			open: function() {
+				$tab_title_input.focus();
+			},
+			close: function() {
+				allFields.val( "" ).removeClass( "ui-state-error" );
+			}
+		});
+		// addTab button: just opens the dialog
+		$( "#add_group" ).click(function() {
+			$dialog.dialog( "open" );
+		});
+	});
+</script>
+	
+<table class="table" id="network" style=" width: 85%;">
+	<thead>
+		<tr>
+			<th></th>
+			<th>Username</th>
+			<th>Group</th>
+			<th>Reputation</th>
+			<th>Last score recived</th>
+			<th>Orbits participated</th>
+			<th>knOrbits Balance</th>
+		</tr>
+	</thead>
+	
+	<tbody>
+	<% @followers.each do |follower| %>
+		<% @followerstatus = Follower.find(:first, :conditions => ["follower_id = ? and followed_id = ?", current_user.id, follower.id]) %>	
+		<tr id="<%= follower.id %>" class=" follower">
+		  	<td><%= gravatar_for follower %></td>
+			<td><%= follower.name %></td>
+			<td><%= @followerstatus.group %></td>		  	
+			<td><%= image_tag("stars/stars"+follower.account.reputation.to_s+".png", :alt => "Sample App")%></td>
+			<td></td>
+			<td><%= Job.find(:all, :conditions => ['user_id = ?', follower.id]).count + Contribution.find(:all, :conditions => ['user_id = ?', follower.id]).count%></td>
+			<td></td>		
+		</tr>
+		<ul style="text-align: center;" class="user-pop-up-<%= follower.id %>" title="<%= follower.name %>">
+			
+	  		<% if !follower.profile.keyword1.empty? or !follower.profile.qualifier1.empty? or !follower.profile.keyword2.empty? or !follower.profile.qualifier2.empty? or !follower.profile.keyword3.empty? or !follower.profile.qualifier3.empty? or !follower.profile.keyword4.empty? or !follower.profile.qualifier4.empty? or !follower.profile.keyword5.empty? or !follower.profile.qualifier5.empty? %>
+	  			<li><input type=button value="Show profile" class="button" onclick="location.href='<%=profile_path(follower.profile)%>'"></li>
+			<% else %>
+				<li><input type=button value="The profile is empty" class="button_disable" disabled="disabled"></li>					
+	  		<% end %>	  				
+	  		<li><input type=button value="Send message" class="button" onclick="location.href='/people/<%=follower.id%>/mail'"></li>
+
+			<% if Job.where('user_id = ? and public = ? and status != ?', follower.id, 'Yes', 'draft').any? %>
+	  			<li><input type=button value="Show Orbits" class="button" onclick="location.href='/people/<%=follower.id%>/jobs'"></li>
+			<% else %>
+				<li><input type=button value="Show Orbits" class="button_disable" disabled="disabled"></li>					
+	  		<% end %>
+			<li><input type=button value="Give knOrbits" class="button_disable" disabled="disabled"></li>		
+		</ul>
+		<script>
+			/* Pop-up Dashboard*/
+		
+			/* Pop-up My Network - My Orbits*/
+	
+			$( ".user-pop-up-<%= follower.id %>" ).dialog({
+				autoOpen: false,
+				height: 300,
+				width: 350,
+				draggable: false,
+				resizable: false,
+				modal: true,
+				stack: false
+			});
+			
+			$( "#<%= follower.id %>").click(function() {
+				$( ".user-pop-up-<%= follower.id %>" ).dialog( "open" );
+				return false;
+			});
+			
+		</script>			
+	<% end %>
+	</tbody>
+</table>
+
+<script>
+$(function() {
+	$( ".groups" ).draggable({ connectToSortable: ".follower", helper: "clone", revert: "invalid", delay: 300 });
+	$( ".newgroups" ).draggable({ connectToSortable: ".follower #trash", helper: "clone", revert: "invalid", delay: 300 });
+	
+	$( ".follower" ).droppable({
+		accept: ".groups",
+		activeClass: "follower-active",
+		hoverClass: "follower-hover",
+		drop: function( event, ui ) {
+			$( this ).children(':nth-child(3)').text($(ui.draggable).text());
+			changeGroup( $(ui.draggable).text(), $( this )[0].id);
+		}
+	});
+	$( "#trash" ).droppable({
+		accept: ".newgroups",
+		activeClass: "follower-active",
+		hoverClass: "follower-hover",
+		drop: function( event, ui ) {
+			removegroup($(ui.draggable).text())
+			ui.draggable.remove();
+			jQuery.each($(".follower").children(':nth-child(3)'), function(index, value) {
+				if (value.firstChild.nodeValue == $(ui.draggable).text()) {
+					value.firstChild.nodeValue = "None";
+				}
+			});
+			$( this )
+				.addClass( "trashed" )
+					setTimeout(function() {
+						$("#trash").find( "p" ).html("TRASH").show( "blind", {} );
+						$("#trash").removeClass( "trashed" );
+					}, 2000 );
+		}
+	});
+});
+</script>
+<script>
+	// Ajax - Save a comment		
+	function groupadded() {
+		if (xmlHttp.readyState == 4) {				
+			document.getElementById('groupstable').innerHTML = xmlHttp.responseText;
+			$(function() {
+				$( ".groups" ).draggable({ connectToSortable: ".follower", helper: "clone", revert: "invalid", delay: 300 });
+				$( ".newgroups" ).draggable({connectToSortable: ".follower #trash", helper: "clone", revert: "invalid", delay: 300 });
+				
+				$( ".follower" ).droppable({
+					accept: ".groups",
+					activeClass: "follower-active",
+					hoverClass: "follower-hover",
+					drop: function( event, ui ) {
+						$( this ).children(':nth-child(3)').text($(ui.draggable).text());
+						changeGroup( $(ui.draggable).text(), $( this )[0].id);
+					}
+				});
+				$( "#trash" ).droppable({
+					accept: ".newgroups",
+					activeClass: "follower-active",
+					hoverClass: "follower-hover",
+					drop: function( event, ui ) {
+						removegroup($(ui.draggable).text())
+						ui.draggable.remove();
+						jQuery.each($(".follower").children(':nth-child(3)'), function(index, value) {
+							if (value.firstChild.nodeValue == $(ui.draggable).text()) {
+								value.firstChild.nodeValue = "None";
+							}
+						});
+						$( this )
+							.addClass( "trashed" )
+								setTimeout(function() {
+									$("#trash").find( "p" ).html("TRASH").show( "blind", {} );
+									$("#trash").removeClass( "trashed" );
+								}, 2000 );
+					}
+				});
+				var title = $( "#tab_title" ),
+				allFields = $( [] ).add( title );
+				arrayPagesDeleted = new Array();
+				arrayChangedTitles = new Array();
+				// modal dialog init: custom buttons and a "close" callback reseting the form inside
+				var $dialog = $( "#popup_group" ).dialog({
+					autoOpen: false,
+					modal: true,
+					buttons: {
+						Add: function() {
+							if ($( '#tab_title' ).val() == "") {
+								alert("title can not be empty");
+								return false;
+							}
+							if( $('#accordion').sortable('toArray').toString().search($( '#tab_title' ).val()) != -1) {
+								alert("There is other section with the same name");
+								return false;
+							}
+							addnewgroup( $( '#tab_title' ).val());					
+							$( this ).dialog( "close" );
+						},
+						Cancel: function() {
+							$( this ).dialog( "close" );
+						}
+					},
+					open: function() {
+						$tab_title_input.focus();
+					},
+					close: function() {
+						allFields.val( "" ).removeClass( "ui-state-error" );
+					}
+				});
+				$( "#add_group" ).click(function() {
+					$dialog.dialog( "open" );
+				});
+			});		
+		}
+	}
+</script>

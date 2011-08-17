@@ -1,0 +1,172 @@
+<html>
+<head>
+  <title>knOrbit</title>
+    <%= csrf_meta_tag %>
+    <meta charset="utf-8">
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]><%= stylesheet_link_tag 'blueprint/ie' %><![endif]-->	
+	<%= javascript_include_tag 'jquery.min' %>
+	<%= javascript_include_tag 'jquery-ui.min'  %>
+	<%= stylesheet_link_tag 'theme/jquery-ui-1.8.10.custom' %>
+    <%= stylesheet_link_tag 'custom' %>
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-7279667-5']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+        <script type="text/javascript" src="http://use.typekit.com/wrc0yhw.js"></script>
+        <script type="text/javascript">try{Typekit.load();}catch(e){}</script>	
+</head>
+<body>
+	<!-- Añade esta etiqueta en la cabecera o delante de la etiqueta body. -->
+	<script type="text/javascript" src="https://apis.google.com/js/plusone.js">
+	  {lang: 'es'}
+	</script>
+	<div class="knorbit">
+		<div id="main">
+			<div class="header1">
+				<ul>
+					<li style="float: right;"><%= link_to "LOG OUT", destroy_user_session_path %></li>	
+					<li><%= current_user.name%></li>		
+				</ul>		
+			</div>
+			<div class="header2">
+				<div id="logo">
+					<a href="<%= root_path %>" title="Home Page"><%= image_tag("knorbit.png", :alt => "Sample App", :class => "logo") %></a>		
+				</div> 
+				<div class="menu2">
+					<ul>
+						<%if request.request_uri == '/user' %>
+							<li style="margin-top: -5px;"><%= link_to image_tag("blackhouse.png"), root_path%></li>
+						<%else%>
+							<li style="margin-top: -5px;"><%= link_to image_tag("house.png"), root_path%></li>
+						<%end%>
+						
+						<%if request.request_uri == '/people' %>
+							<li><%= link_to "MY NETWORK", people_path, :class => "bt_active"%></li>
+						<%else%>
+							<li><%= link_to "MY NETWORK", people_path%></li>
+						<%end%>
+						
+						<%if request.request_uri == jobs_path %>
+							<li><%= link_to "MY TRAIL", jobs_path, :class => "bt_active"%></li>
+						<%else%>
+							<li><%= link_to "MY TRAIL", jobs_path%></li>
+						<%end%>
+						
+						<%if request.request_uri == profile_path(current_user.profile) %>
+							<li><%= link_to "MY PROFILE", profile_path(current_user.profile), :class => "bt_active"%></li>
+						<%else%>
+							<li><%= link_to "MY PROFILE", profile_path(current_user.profile)%></li>
+						<%end%>
+						
+						<%if request.request_uri == account_path(current_user.profile) %>
+							<li><%= link_to "MY ACCOUNT", account_path(current_user.profile), :class => "bt_active"%></li>
+						<%else%>
+							<li><%= link_to "MY ACCOUNT", account_path(current_user.profile)%></li>
+						<%end%>
+						<li>
+							<% form_tag search_job_path(current_user.id), :method => 'get' do %>
+								<input id="search" style="font-size: 19px;" type="search" results="5" name="search" placeholder="Search Orbits...">
+							<% end %>
+						</li>
+					</ul>
+					
+				</div>	
+			</div>
+			<table class="header3">
+				<tr>
+					<td>
+						<div class="divsearch">
+							<span style="float:left; padding-top: 3px; margin-left: 5px;">PURCHASE</span>
+						</div>
+						
+					</td>
+					<td>
+						<div class="star" id="star">
+							<div><%= gravatar_for(current_user, :size=>50) %></div>
+							<p>MY STATUS</p>
+						</div>
+					</td>
+					<td>
+						<div class="flag" id="flag">
+		    				<div><%= image_tag("flag.png", :alt => "Sample App") %></div>
+		    				<p>RECENT ACTIVITY</p>
+						</div>
+					</td>			
+				</tr>
+			</table>
+			<div id="user-popup" title="My Status" style="display:none">
+				<div style="min-height: 100px;">         	
+					<%= gravatar_for(current_user, :size=>80) %> 
+					<% if !current_user.profile.nil? %>	
+						<p style="margin-left: 90px; margin-top:0px;">Credit: <span class="green"><%= current_user.account.credit %></span></p>
+						<p style="margin-left: 90px;">Reputation 	            
+						<%= image_tag("stars/stars"+current_user.account.reputation.to_s+".png", :alt => "Sample App") %></p><br>	 	
+    					Account type:   <t style="font-weight:bold;"><%= current_user.account.account %></t>	 	
+ 					<% end %> 	
+ 				</div>	 	
+  				<hr>
+				<b>Language/s: </b><%= current_user.account.language%><br>
+				<b>Country: </b><%= current_user.account.geospace%><br>			 	         	
+			</div>
+			
+			<div id="recent-popup" title="Recent activity" style="display:none">
+				<div style="min-height: 100px;">         	
+					<%= image_tag("flag.png", :height => "30%", :style => "float:left;") %>
+					<p style="margin-left: 90px; margin-top:0px;"><%= current_user.name %></p>
+					<% if !current_user.profile.nil? %>	
+						<p style="margin-left: 90px; margin-top:0px;">Credit: <span class="green"><%= current_user.account.credit %></span></p>
+						<p style="margin-left: 90px;">Reputation 	            
+						<%= image_tag("stars/stars"+current_user.account.reputation.to_s+".png", :alt => "Sample App") %></p><br>	 	
+ 					<% end %>
+ 				</div>
+ 				<hr>
+				You have <span style="color: red;"><%= Job.find(:all, :conditions => ['status = ? and user_id = ?', 'draft',  current_user.id]).count	%></span> Draft Orbits<br>
+				You have <span style="color: red;"><%= Invitations.find(:all, :conditions => ['to_email = ? and status = ?', current_user.email, 'pending']).count	%></span> Orbits to accept<br>
+				You have <span style="color: red;"><%= Message.find(:all, :conditions => ['to_id = ? and read = ?',  current_user.id, false]).count	%></span> new messages in <%= link_to "Inbox", messages_path%><br>
+				You have <span style="color: red;"><%= Job.find(:all, :conditions => ['status = ? and user_id = ?', 'Ready for reward',  current_user.id]).count	%></span> Pending Rewards<br>	 	
+			</div>
+			<div class="content" id="content">
+				<%= yield %>
+			</div>
+		</div>
+		<div id="footer">
+			<%= image_tag("nubes.png", :style => "width:100%;") %>
+	    </div>	
+	</div>
+	
+</body>
+</html>
+<style>
+	#footer {
+	    position: absolute;
+	    margin-bottom: 0px;
+	    bottom: 0;
+	    width: 100%;
+	    text-align: right;
+	    background-color: #8acd30;
+		height: 200px;
+		z-index: -1;
+	    
+	}
+	.knorbit {
+		min-width: 1500px;
+		width:expression(document.body.clientWidth < 1500? "1500px");
+	  	width: 95%;
+		margin: 0px auto 0px auto;
+		position: relative;
+	}
+</style>
+
+<%= javascript_include_tag 'application'  %>

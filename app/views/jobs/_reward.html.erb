@@ -1,0 +1,78 @@
+<div class="field">
+	<table>
+		<tr>
+			<td>Deadline for reward : </td>
+			<td></td>
+			<td><%= @job.date %></td>
+		</tr>
+	</table>	
+</div>
+<br/>
+
+<%
+	@rewardsconverter = Array.new
+	@rewardsconverter[0] = "NEUTRAL"
+	@rewardsconverter[1] = "FAIR"
+	@rewardsconverter[2] = "GOOD"
+	@rewardsconverter[3] = "EXCELLENT"
+	@rewardsconverter[4] = "EXCEPTIONAL"
+%>
+<table class="table">
+	<thead>
+		<tr>
+			<th></th>
+			<th>Username</th>
+			<th>Days as contributor</th>
+			<th>Last visit</th>
+			<th>Number of contributions</th>
+			<th>Percentage of contribution</th>
+			<th>Score</th>
+		</tr>
+	</thead>
+	<% @job.contributed.each do |contributor| %>
+		<tbody>
+			<tr>
+			  	<td><%= gravatar_for contributor.user %></td>
+			  	<td><%= contributor.user.name %></td>
+			  	<td><%= Date.today - Contribution.find(:first, :conditions => {:user_id => contributor.user.id, :job_id => @job.id}).created_at.to_date %></td>
+			  	<td>
+			  		<% @activity = Activity.find(:first, :order => "created_at desc", :conditions => {:user_id => contributor.user.id, :job_id => @job.id, :code => 1}) %>
+			  		<%= time_ago_in_words(@activity.created_at)+" ago" unless @activity.nil? %>
+			  	</td>
+				<td><%= Activity.where(:user_id => contributor.user.id, :job_id => @job.id, :code => 1).count %></td>
+				<td><%= (Activity.where(:user_id => contributor.user.id, :job_id => @job.id, :code => 1).count / ((Date.today - Contribution.find(:first, :conditions => {:user_id => contributor.user.id, :job_id => @job.id}).created_at.to_date) + 1)) * 100 %> %</td>
+				
+				<td style="text-align: center;">
+					<% @rewards = Rewards.find(:first,:select => "points, total", :conditions => ["owner_id = ? and contributor_id = ? and job_id = ?", current_user.id, contributor.user.id, @job.id]) %>
+					<% if @rewards.nil?
+						@points = 0 
+					else
+						@points = @rewards.points
+					end %>
+					<%= hidden_field_tag("points[#{contributor.user.id}]", @points , {:id => "hiddenpoints#{contributor.id}"})  %>
+					<%= text_field_tag("points[#{contributor.user.id}]", @rewardsconverter[@points], {:disabled => "disabled", :id => "textpoints#{contributor.id}"})  %>
+					<% if @job.status != 'closed' %>
+						<script>
+							$(function() {
+								$( "#slider<%=contributor.id%>").slider({
+									value:<%=@points%>,
+									min: 0,
+									max: 4,
+									step: 1,
+								   	slide: function(event, ui) {
+										document.getElementById("hiddenpoints<%=contributor.id%>").value = ui.value;
+										document.getElementById("textpoints<%=contributor.id%>").value = rewards[ui.value];
+									}	
+								});
+							});
+						</script>
+						<div id="slider<%=contributor.id%>" class="slider" style="margin-right: 5px;"></div>
+					<% end %>		
+				</td>
+			</tr>	
+  		</tbody>
+	<% end %>
+</table>
+<% if @job.status == 'open' || @job.status == 'Ready for reward' %>
+	<input id="job_submit" name="commit" type="submit" value="Save" class="button">
+<% end%>

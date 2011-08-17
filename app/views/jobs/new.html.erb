@@ -1,0 +1,42 @@
+<%= form_for @job, :html => { :onsubmit => "validate();" } do |f| %>
+	<% if @job.errors.any? %>
+	    <div id="noticesuccess">	
+			<% @job.errors.full_messages.each do |msg| %>
+				<%= image_tag("blocked.png", :alt => "Sample App") %><span style="color: red"> <%= msg %></span><br/>
+			<% end %>
+		    <hr />
+	    </div>
+	<% end %>
+	<div style="height: 40px; margin-top: 15px;">
+		<div id="jobtitle" class="jobtitle" style="height: 20px; min-width: 50px;"></div>
+		<div style="float: right;">
+			<input type=button value="Edit" class="button_disable" disabled="disabled">
+			<input type=button value="Launch" class="button_disable" disabled="disabled">
+		</div>
+	</div>
+	
+	<div style="padding: 5px; background: #333333;"></div>
+	<div id="tabsnewjob">
+		<ul>
+			<li><a href="#tabs-1">Description</a></li>
+			<li><a href="#tabs-2">Sections</a></li>
+			<li><a href="#tabs-3">Skills</a></li>
+			<li><a href="#tabs-4">Invitations</a></li>
+			<li><a href="#tabs-5">Peers</a></li>
+			<li><a href="#tabs-6">Versions</a></li>
+			<li><a href="#tabs-7">Rewards</a></li>
+		</ul>
+		
+		<div id="tabs-1">
+			<%= render :partial => 'settings', :locals => {:f => f} %>
+		</div>	
+	</div>
+<% end %>
+<script>
+	$('#job_name').live('keyup', function(e) { 
+		$('#jobtitle').html($(this)[0].value);
+	});
+
+</script>
+
+

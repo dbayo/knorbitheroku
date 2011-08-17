@@ -1,0 +1,38 @@
+<h1>Listing jobs</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Title</th>
+    <th>Description</th>
+    <th>Wiki</th>
+    <th>O date</th>
+    <th>S date</th>
+    <th>Status</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @contributions.each do |contribution| %>
+	<% if user_signed_in? && current_user.email == contribution.user.email %>
+		<tr>
+		  <td><%= contribution.job.name %></td>
+		  <td><%= contribution.job.title %></td>
+		  <td><%= contribution.job.description %></td>
+		  <td><%= contribution.job.wiki %></td>
+		  <td><%= contribution.job.o_date %></td>
+		  <td><%= contribution.job.s_date %></td>
+		  <td><%= contribution.job.status %></td>
+		  <td><%= link_to 'Show', contribution.job %></td>
+		  <td><%= link_to 'Edit', edit_job_path(contribution.job) %></td>
+		  <td><%= link_to 'Destroy', contribution.job, :confirm => 'Are you sure?', :method => :delete %></td>
+		</tr>
+	<% end %>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Job', new_job_path %> |
+<%= link_to 'Main page', root_path %>

@@ -1,0 +1,92 @@
+<div class="jobtitle"><%= truncate(@job.name, :length => 50)%></div><br /><br />
+<div style="padding: 5px; background: #333333;"></div>
+<div id="tabs" style="display:none">
+	<ul>
+		<li><a href="#tabs-0">Invite a reader</a></li>
+	</ul>
+	<div id="tabs-0">
+		<% form_tag (sharejob_path(@job), :method => "put") do %>
+			<div style="width:35%;">
+				<h3>My Network</h3>
+				<table class="table">
+					<thead>
+						<tr>
+							<th></th>
+							<th></th>
+							<th>User name</th>
+						</tr>
+					</thead>	
+					<% @followers.each do |follower| %>
+							<tbody>
+								<tr>
+									<td>
+										<%= 
+											@usershared = Sharedjob.find(:all, :conditions => ['job_id = ? and to_email = ?', params[:id], follower.email])
+											if @usershared[0].nil? and follower.id != @job.user.id and !Contribution.where(:job_id => @job.id, :user_id => follower.id).exists?
+												check_box_tag 'network[]', follower.email
+											end
+				 						%>
+									</td>
+								  	<td><%= gravatar_for follower %></td>
+								  	<td><%= follower.name %></td>
+								</tr>	
+					  		</tbody>
+					<% end %>
+				</table>	
+			</div>
+			
+			<div id='invsendinvitations'>
+				<h3>Send a invitation by email</h3>
+				<textarea id="sendto" name="sendto" style="width: 100%; resize: none;" rows="4"></textarea><br/>
+				<%= hidden_field_tag(:job_id, params[:id]) %>
+				<%= hidden_field_tag(:selectedEmails) %>
+				<div id="googleIdExampleTextDiv" style="margin-left:15px;" align="left">
+				  	<font size="-1" face="Arial, sans-serif" color="#6f6f6f">
+				  		Use commas to separate the emails
+				  	</font>
+				</div><br />
+				<%= submit_tag("Save", :class => "button") %>
+			</div>
+			
+			<div id='invsubmitted'>
+				<h3>Invitations Submitted (<%= @sharedjobs.count %>)</h3>	
+				<table class="table">
+					<thead>
+						<tr>
+							<th style="width:20%;"></th>
+							<th>User name</th>
+						</tr>
+					</thead>
+					<tbody>		
+					<% @sharedjobs.each do |sharedjob| %>
+						<tr>
+						  	<td style="height:60px;">
+								<% if !User.find_by_email(sharedjob.to_email).nil? %>
+									<%= gravatar_for User.find_by_email(sharedjob.to_email) %>
+								<% end %>
+							</td>
+							<td><%= sharedjob.to_email %></td>
+						</tr>		  		
+					<% end %>
+					</tbody>
+				</table>
+			</div>
+		<%end%>
+		<style>
+			#table td{
+				cursor: default ;
+			}
+		</style>
+	</div>
+</div>
+<script>			
+	$(function() {
+		$( "#tabs" ).tabs({cache: true});
+		$( "#tabs" ).css("display","block");
+		var selected = $( "#tabs" ).tabs( "option", "selected" );
+		if (selected > 3) {
+			$( "#tabs" ).tabs( "option", "selected", 0 );
+		}
+		$( "#tabs" ).tabs( "option", "disabled", [4,5,6] );			
+	});	
+</script>

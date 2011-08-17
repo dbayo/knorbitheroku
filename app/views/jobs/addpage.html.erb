@@ -1,0 +1,11 @@
+<h1>Add new page</h1>
+
+<%= form_tag(createpage_job_path(@job), :method => "post") do %>
+  <%= label_tag(:title, "Title: ") %>
+  <%= text_field_tag(:title) %>
+	<%= hidden_field_tag(:name, @job.name) %>
+  <%= submit_tag("Add") %>
+<% end %>
+
+<%= link_to 'Show', @job %> |
+<%= link_to 'Back', jobs_path %>

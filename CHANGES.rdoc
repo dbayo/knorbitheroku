@@ -1,0 +1,5 @@
+= 0.15
+1. Export to PDF.
+=0.16
+1. Performance fixes in collaborative editor
+2. Select the users for which you want to see the colors in the text

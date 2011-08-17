@@ -1,0 +1,26 @@
+<div style="height: 40px; margin-top: 15px;">
+	<div class="jobtitle"><%= truncate(@job.name, :length => 50)%></div>
+	<div style="float: right;">
+		<%if @job.status == 'draft'%>
+			<input id="job_submit" name="commit" type="submit" value="Edit" class="button" onClick="document.getElementById('selectedbutton').value = 'edit';">
+			<% if !@job.template.nil? and !@job.template.empty? and Invitations.where(:job_id => @job.id ).any? and @job.checkmarkskills == "Yes"%>
+				<input id="job_submit" name="commit" type="submit" value="Launch" class="button" onClick="document.getElementById('selectedbutton').value = 'launch';">
+			<% else%>
+				<input id="job_submit" name="commit" type="button" value="Launch" class="button_disable">
+			<% end %>
+		<% elsif @job.status == 'open' %>
+			<input id="job_submit" name="commit" type="submit" value="Edit" class="button" onClick="document.getElementById('selectedbutton').value = 'edit';">
+		<% elsif @job.status == 'Ready for reward' %>
+			<input id="job_submit" name="commit" type="submit" value="Edit" class="button" onClick="document.getElementById('selectedbutton').value = 'edit';">
+			<% if @job.user.id == current_user.id%>
+				<input id="job_submit" name="commit" type="submit" value="Done" class="button" onClick="document.getElementById('selectedbutton').value = 'Done';">
+			<% end%>	
+		<% elsif @job.status == 'closed'%>
+			<input type="button" value="View/Comment" class="button" onclick="location.href='<%=@job.wiki%>'">
+			
+			<% if @job.user.id == current_user.id%>
+				<input type="button" value="Replication" class="button" onclick="location.href='<%=replication_job_path(@job)%>'">
+			<% end%>
+		<% end%>
+	</div>
+</div>

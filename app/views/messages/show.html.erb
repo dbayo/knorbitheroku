@@ -1,0 +1,18 @@
+<p>
+  <b>From:</b>
+  <%= @message.from.name %>
+  at <%=time_ago_in_words(@message.created_at) %> ago.
+</p>
+
+<p>
+  <b>Subject:</b>
+  <%= @message.subject %>
+</p>
+
+<p>
+  <b>Message:</b>
+  <%= @message.body %>
+</p>
+
+<%= link_to 'Delete', @message, :confirm => 'Are you sure?', :method => :delete %> | 
+<%= link_to 'Back', messages_path %>

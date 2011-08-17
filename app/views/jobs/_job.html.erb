@@ -1,0 +1,62 @@
+<tr class="selectedUser" id="owner_<%= job.id %>">
+  	<td id="name"><%= truncate(job.name, :length => 22)%></td>
+  	<td><%= job.status %></td>
+	<td><%= job.contributed.count %></span>
+	<td><%= job.date %></td>
+	<td>
+		<% @lastvisit = Activity.where(:job_id => job.id, :user_id => current_user.id, :code => 3)[0] %>
+		<% @lastactivities = Activity.where('job_id = ? and code = ? and updated_at > ?', job.id, 2, @lastvisit.updated_at) unless @lastvisit.nil?%>
+		<%= if @lastactivities.nil?
+				"0"
+			else
+				@lastactivities.count
+			end	 
+		%>
+	</td>
+	<td></td>
+	<% if job.status == 'draft' %>
+		<ul style="text-align: center; " class="myorbits-pop-up-<%= job.id %>" title="Orbit: <%= truncate(job.name, :length => 22)%>">
+			<input type="button" value="Edit content" class="button" onclick="location.href='<%=job.wiki%>'"><br />
+			<input type="button" value="Orbit attributes" class="button" onclick="location.href='<%=job_path(job)%>'"><br />
+			<% if !job.template.nil? and !job.template.empty? and Invitations.where(:job_id => job.id ).any? and job.checkmarkskills == "Yes"%>
+				<input type="button" value="Launch" class="button" onclick="location.href='<%=open_job_path(job)%>'"><br />
+			<% else%>
+				<input type="button" value="Launch" class="button_disable"><br />
+			<% end %>
+			<input type="button" value="Delete" class="button" onclick="location.href='<%=remove_job_path(job)%>'"><br />	
+		</ul>
+	<%elsif job.status == 'open'%>
+		<ul style="text-align: center; " class="myorbits-pop-up-<%= job.id %>" title="Orbit: <%= truncate(job.name, :length => 22)%>">
+			<input type="button" value="Edit content" class="button" onclick="location.href='<%=job.wiki%>'"><br />
+			<input type="button" value="Orbit attributes" class="button" onclick="location.href='<%=job_path(job)+'#tabs-3'%>'"><br />
+			<input type="button" value="Close Orbit" class="button" onclick="location.href='<%=internaltimeout_job_path(job)%>'"><br />
+		</ul>
+	<%else%>
+		<ul style="text-align: center; " class="myorbits-pop-up-<%= job.id %>" title="Orbit: <%= truncate(job.name, :length => 22)%>">
+			<input type="button" value="View content" class="button" onclick="location.href='<%=job.wiki%>'"><br />
+			<input type="button" value="Orbit attributes" class="button" onclick="location.href='<%=job_path(job)+'#tabs-6'%>'"><br />
+		</ul>
+	<%end%>
+	<script>	
+		/* Pop-up Dashboard*/
+	
+		/* Pop-up Dashboard - My Orbits*/
+
+		$( ".myorbits-pop-up-<%= job.id %>" ).dialog({
+			autoOpen: false,
+			height: 250,
+			minWidth: 250,
+			draggable: false,
+			resizable: false,
+			modal: true,
+			stack: false
+		});
+		
+		$( "#owner_<%= job.id %>").click(function() {
+			$( ".myorbits-pop-up-<%= job.id %>" ).dialog( "open" );
+			return false;
+		});
+		
+	</script>
+</tr>
+

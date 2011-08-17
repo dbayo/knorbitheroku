@@ -1,0 +1,11 @@
+<!-- Actions.--> 
+<input type="button" value="Current version" class="button" onclick="location.href='<%=space_path(@space.wiki_name)%>'">
+<hr />
+
+<h2>Table of contents</h2>
+<p><b>Title : </b><%=@job.name %>  ( v. <%=@spaceversion.name%> )</p><p><b>Created : </b><%= time_ago_in_words(@spaceversion.created_at) %> ago.</p><p><b>Description : </b><%=@job.description%></p><p><b>Job Sections : </b></p>
+<div id="content">
+	<% if !@spaceversion.content.nil? and !@spaceversion.content.empty?  %>
+		<p><%= @spaceversion.content.html_safe %></p>
+	<% end%>
+</div><br/>

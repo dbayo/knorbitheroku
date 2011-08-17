@@ -1,0 +1,27 @@
+<% if @job.status == 'open' %>
+	<div style="float:left; width: 20%; text-align: center;" class="templates">
+		<h2 style="text-align: center;" class="green">+ NEW VERSION</h2>
+		<h4>Save current version of the document</h4>
+		Name : <%= text_field_tag :nameversion%><br /><br />
+		<input id="job_submit" name="commit" type="submit" value="Save" class="button">
+		<br /><br />
+	</div>
+<% end%>
+<% if @job.status == 'open' %>
+	<div style="padding-left:30%; min-height:100px; height:auto !important; height: 100px;">
+<%else%>
+	<div style="min-height:100px; height:auto !important; height: 100px;">
+<%end%>
+	<h3 class="green">Last Versions ( <%= @space.versions.count %> )</h3>
+	<table id="versions" class="table">
+		<th>Name</th>
+		<th>Date</th>
+		
+		<% @space.versions.each do |version| %>
+			<tr onclick="location.href='/spaces/<%= @space.wiki_name%>/version/<%=version.id %>'">
+				<td><%= version.name %></td>
+				<td><%= time_ago_in_words(version.created_at) %> ago.</td>
+			</tr>
+		<% end %>
+	</table>
+</div>

@@ -1,0 +1,104 @@
+<div id="identification" class="account">
+	<h2 class="green">IDENTIFICATION</h2>
+	<table>
+		<tr>
+			<td><b>Username:</b></td>
+			<td><%= current_user.name%></td>
+		</tr>
+		<tr>
+			<td><b>email:</b></td>
+			<td><%= current_user.email%></td>
+		</tr>
+		<tr>
+			<td><b>Payment method:</b></td>
+			<td><%= @account.account %></td>
+		</tr>
+		<tr>
+			<td><b>User Level:</b></td>
+			<td><%= @account.userlevel %></td>
+		</tr>
+		<tr>
+			<td><b>Reputation:</b></td>
+			<td><%= image_tag("stars/stars"+@account.reputation.to_s+".png", :alt => "Sample App") %></td>
+		</tr>
+		<tr>
+			<td><b>Profile completion:</b></td>
+			<td>
+				<div id="progressbar"></div>
+				<span style="position:absolute; margin-top: -20px; margin-left: 95px;"><%= @i * 10 %>%</span>
+			</td>
+		</tr>
+	</table>
+</div>
+<br />
+<div id="preferences" class="account" style="padding-bottom: 40px;">
+	<h2 class="green">PREFERENCES</h2>
+	<table>
+		<tr>
+			<td><b>Languages:</b></td>
+			<td><%= @account.language %></td>
+		</tr>
+		<tr>
+			<td><b>Country:</b></td>
+			<td><%= @account.geospace %></td>
+		</tr>
+		<tr>
+			<td><b>Contributor active:</b></td>
+			<td><% if @account.active == "Yes"%>
+					<label for="radio1" class="cb-enable selected"><span>Yes</span></label>
+					<label for="radio2" class="cb-disable"><span>No</span></label>
+				<% else %>
+					<label for="radio1" class="cb-enable"><span>Yes</span></label>
+					<label for="radio2" class="cb-disable selected"><span>No</span></label>
+				<% end %>
+			</td>
+		</tr>
+		<tr>
+			<td><b>Max. invitations allowed per week:</b></td>
+			<td><%= @account.maxinv %></td>
+		</tr>
+		<tr>
+			<td><b>Allow other users with whom you are networked to send you messages:</b></td>
+			<td><% if @account.allowsms == "Yes"%>
+					<label for="radio1" class="cb-enable selected"><span>Yes</span></label>
+					<label for="radio2" class="cb-disable"><span>No</span></label>
+				<% else %>
+					<label for="radio1" class="cb-enable"><span>Yes</span></label>
+					<label for="radio2" class="cb-disable selected"><span>No</span></label>
+				<% end %>
+			</td>
+		</tr>
+		<tr>
+			<td><b>Allow email alerts:</b></td>
+			<td><% if @account.allowalerts == "Yes"%>
+					<label for="radio1" class="cb-enable selected"><span>Yes</span></label>
+					<label for="radio2" class="cb-disable"><span>No</span></label>
+				<% else %>
+					<label for="radio1" class="cb-enable"><span>Yes</span></label>
+					<label for="radio2" class="cb-disable selected"><span>No</span></label>
+				<% end %>
+			</td>
+		</tr>
+		<tr>
+			<td><%= link_to image_tag("delicious.png"), "http://www.delicious.com", :title => 'Delicious'%> : </td>
+			<td><%= @account.delicious %></td>
+		</tr>
+	</table>
+	<input ONCLICK="window.location.href='<%= edit_account_path(@profile) %>'" type="button" value="Edit" class="button" style="float: right;">
+</div>
+<br />
+
+<style>
+	.ui-progressbar-value { border: 1px solid black; border-right: none; background-image: url(../images/pbar-ani.gif); }
+	#progressbar {
+		height: 20px !important;
+		border: 1px solid black; 
+	}
+</style>
+<script>
+	$(function() {
+		$( "#progressbar" ).progressbar({
+			value: <%= @i * 10 %>
+		});
+	});
+</script>

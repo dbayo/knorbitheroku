@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  	<head>
+    	<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  	</head>
+  	<body>
+    	<p>
+	      	Dear <%= @sendto.name %><br/>
+			I know you have a lot of knowledge and experience in this area and I would like your collaboration in a new orbit I’m working on:		
+    	</p>
+    	<h2><%= @job.name %></h2>
+		<h4><%= @job.description %></h4>
+
+
+		<%= image_tag attachments['blueline.jpg'].url, :style => "width:100%;"%><br/>
+		<a href="http://50.19.237.77/invitations/<%=@invitation.id.to_s%>/accept"><%= image_tag attachments['accept.jpg'].url, :size => "200x100"  %></a>
+		<a href="http://50.19.237.77<%= @job.wiki%>">I want more information on this Orbit</a><br/>
+		<%= image_tag attachments['blueline.jpg'].url, :style => "width:100%;" %>
+
+		<p>Thanks you,</p>
+		<i><%= @user.name %></i>
+  	</body>
+</html>

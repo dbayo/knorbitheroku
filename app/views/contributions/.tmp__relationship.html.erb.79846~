@@ -1,0 +1,13 @@
+<tr>
+  	<td class="job_title"><a href="<%= relationship.job.wiki %>"><%= relationship.job.title %></a></td>
+  	<td class="job_status"><%= relationship.job.status %></td>
+	<td class="job_contributed"><%= relationship.job.contributed.count %></span>
+	<td class="job_deadlines"><%= %></td>
+	<td class="job_rewards"><%= time_ago_in_words(relationship.created_at) %></td>
+	<td class="Job_type"><%= time_ago_in_words(relationship.updated_at) %></td>
+	<td><a href="<%= job_path(relationship.job) %>"><%= image_tag("show.png") %></a></td>
+	<td><a href="<%= edit_job_path(relationship.job) %>"><%= image_tag("edit.ico") %></a></td>
+	<td><a href="<%= invitation_path(relationship.job) %>"><%= image_tag("contribute.png") %></a></td>
+	<br>
+	<br>
+</tr>

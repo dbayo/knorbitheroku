@@ -1,0 +1,155 @@
+<% if hasaccesstothejob? %>
+	<% if @job.errors.any? %>
+	    <div id="noticesuccess">	
+			<% @job.errors.full_messages.each do |msg| %>
+				<%= image_tag("blocked.png", :alt => "Sample App") %><span style="color: red"> <%= msg %></span><br/>
+			<% end %>
+			<hr />
+	    </div>	
+	<% end %>
+	<% if !notice.nil? %>
+		<div id="noticesuccess">
+			<%= image_tag("visto.png", :alt => "Sample App") %><span class="green"><%= notice %></span><hr />
+		</div>
+	<% end%>
+	
+	<%= form_for @job, :html => { :onsubmit => "return validate();" } do |f| %>
+	<%= render :partial => 'actions' %>
+	<%= hidden_field_tag "tabSelected" %>
+	<%= hidden_field_tag "selectedbutton"%>
+	<%= hidden_field_tag "rewards_points"%>
+	<%= f.hidden_field "checkmarkskills", :value => @job.checkmarkskills%>
+	<%= f.hidden_field "checkmarksections", :value => @job.checkmarksections%>
+	<div style="padding: 5px; background: #333333;"></div>
+	<div id="tabs" style="display:none">
+		<ul>
+			<li><a href="#tabs-0">Description <%= image_tag("checkmark.png", {:height => 15}) unless @job.name.empty? or @job.description.empty? %></a></li>
+			<li><a href="#tabs-1">Sections <%= image_tag("checkmark.png", {:height => 15}) unless @job.template.nil? or @job.template.empty? or @job.checkmarksections == 'No' %></a></li>
+			<li><a href="#tabs-2">Skills <%= image_tag("checkmark.png", {:height => 15}) unless @job.checkmarkskills == 'No' %></a></li>
+			<li><a href="#tabs-3">Invitations <%= image_tag("checkmark.png", {:height => 15}) unless !Invitations.where(:job_id => @job.id ).any? %></a></li>
+			<li><a href="#tabs-4">Contributors</a></li>
+			<li><a href="#tabs-5">Versions</a></li>
+			<li><a href="#tabs-6">Reward</a></li>		
+		</ul>	
+		<div id="tabs-0">
+			<% if @job.status == 'draft'%>
+				<%= render :partial => 'settings', :locals => {:f => f} %>
+			<% else%>
+				<%= render :partial => 'settingssummary', :locals => {:f => f} %>
+			<% end%>
+		</div>
+		<div id="tabs-1">
+			<% if @job.status == 'draft'%>
+				<%= render :partial => 'templates', :locals => {:f => f} %>
+			<% elsif @job.status == 'open'%>
+				<%= render :partial => 'templatessummary', :locals => {:f => f} %>
+			<% else%>
+				<%= render :partial => 'templatessummaryclosed', :locals => {:f => f} %>
+			<% end%>
+		</div>
+		<div id="tabs-2">
+			<% if @job.status == 'draft'%>
+				<%= render :partial => 'skills', :locals => {:f => f} %>
+			<% else%>	
+				<%= render :partial => 'skillssummary', :locals => {:f => f} %>
+			<% end%>
+		</div>	
+		
+		<div id="tabs-3">
+			<% if @job.status == 'draft' || @job.status == 'open'%>
+				<%= render( :template => 'invitations/show', :locals => {:f => f} ) %>	
+			<% end%>
+		</div>	
+		<div id="tabs-4">
+			<% if @job.status != 'draft'%>
+				<%= render :partial => 'contributions'%>
+			<% end%>
+		</div>
+		<div id="tabs-5">
+			<% if @job.status != 'draft' %>
+				<%= render :partial => 'versions', :locals => {:f => f} %>
+			<% end%>
+		</div>
+		<div id="tabs-6">
+			<% if @job.status != 'draft' %>
+				<%= render :partial => 'reward', :locals => {:f => f} %>
+			<% end%>		
+		</div>
+		
+		<!-- End of the form(Job)-->
+		<% end %>
+		<% if @job.status == 'draft'%>
+			<script>			
+				$(function() {
+					$( "#tabs" ).tabs({cache: true});
+					$( "#tabs" ).css("display","block");
+					var selected = $( "#tabs" ).tabs( "option", "selected" );
+					if (selected > 3) {
+						$( "#tabs" ).tabs( "option", "selected", 0 );
+					}
+					$( "#tabs" ).tabs( "option", "disabled", [4,5,6] );			
+				});	
+			</script>
+		<% elsif @job.status == 'Ready for reward' or @job.status == 'closed' %>
+			<script>
+				$(function() {
+					$( "#tabs" ).tabs({cache: true, disabled: [3], selected: 6});
+					$( "#tabs" ).css("display","block");
+				});	
+			</script>
+		<% else %>
+			<script>
+				$( "#tabs" ).tabs({cache: true});
+				$( "#tabs" ).css("display","block");	
+			</script>		
+		<% end%>	
+	</div>
+
+	<script>
+		function validate() {
+			if ($('#accordion').sortable('toArray').toString() == '') {
+				alert("The template must has any section");
+				return false;
+			}
+			document.getElementById('tabSelected').value = $( "#tabs" ).tabs( "option", "selected" ).toString();	
+			document.getElementById('job_template').value = $('#accordion').sortable('toArray').toString();
+			document.getElementById('pagesDeleted').value = arrayPagesDeleted.join(',');
+			document.getElementById('changedNames').value = arrayChangedTitles.join(',');
+			document.getElementById('rewards_points').value = arrayChangedTitles.join(',');
+			
+			
+		}
+
+		function newtemplate() {
+			var sections = $('#accordion').sortable('toArray').toString();
+			var exists = false;
+			for(template in templates) {
+				if (templates[template] == sections) {
+					exists = true;
+				}
+		  	}
+			if (!exists) {
+				var nombre = prompt('Introduce el nombre del nuevo template','');
+				while(nombre == '' || nombre == null || templates.hasOwnProperty(nombre).toString() == 'true') {
+					nombre = prompt('Introduce el nombre del nuevo template','');					
+				}
+				document.getElementById('newtemplatename').value = nombre;
+			} else {
+				alert("It is not a new template");
+			}
+		}
+	</script>
+	<script>
+		$( "#tabs" ).bind( "tabsshow", function(event, ui) {
+			if ($( "#tabs" ).tabs( "option", "selected" ).toString() == "2") {
+				document.getElementById('job_checkmarkskills').value = 'Yes';
+			}else if ($( "#tabs" ).tabs( "option", "selected" ).toString() == "1") {
+				document.getElementById('job_checkmarksections').value = 'Yes';
+			}
+		});
+	</script>
+<%else%>
+	<div id="noticesuccess">
+		<%= image_tag("blocked.png") %><span style="color: red"> Invalid access. You are not the owner of this job.</span><br/>
+	</div>
+<%end%>

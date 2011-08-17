@@ -1,0 +1,371 @@
+<style type="text/css">
+  
+    #fixedDiv {
+    	background: white;
+    	z-index: 5;
+    	padding: 10px;
+    	width: 90%;
+    }
+    
+</style>
+<script type="text/javascript">
+
+	window.onscroll = function()
+	{
+		if( window.XMLHttpRequest ) { // IE 6 doesn't implement position fixed nicely...
+			if (document.documentElement.scrollTop > 280 || self.pageYOffset > 280) {		
+				document.getElementById('fixedDiv').style.position = 'fixed'; 
+				document.getElementById('fixedDiv').style.top = '0';
+				document.getElementById('fixedDiv').style.left = '3%';
+				document.getElementById('fixedDiv').style.border = "#96d43c 4px solid";
+				document.getElementById('fixedDiv').style.width = '90%';
+				document.getElementById('skills').style.height = "150px";
+			
+			} else {
+				document.getElementById('fixedDiv').style.position = 'relative'; 
+				document.getElementById('fixedDiv').style.top = 'auto';
+				document.getElementById('fixedDiv').style.left = '0px';
+				document.getElementById('fixedDiv').style.border = 'none';
+				document.getElementById('skills').style.height = "0px";
+			}
+		}
+	}
+</script>
+<div id="skills">
+</div>
+<div id="fixedDiv">
+	<h3 class="green">Choose the project skills. You can drag and drop these examples to add them into the boxes</h3>
+	<div class="field">
+		<b>Category : </b>
+		<select class="category" id="category" onchange="changeCategory();" onload="changeCategory();">
+			<%= render ( :template => 'jobs/_category' ) %>
+		</select>
+		<script>
+			$(function() {
+				changeCategory();
+			});
+		</script>
+		<span style="margin-left: 40px;" id="lastvalue">History : None</span>
+	</div>
+	
+	<script>
+		$('.droppablearea').live('keydown', function(e) { 
+			var keyCode = e.keyCode || e.which; 
+			if (keyCode == 188) {
+				if ($(this)[0].value.split(',').length >= 10) {
+					e.preventDefault();
+				}		   			
+			} else if($(this).parent().parent().parent().children(':nth-child(1)').children(':nth-child(1)').children(':nth-child(1)')[0].value == "" ){
+				e.preventDefault();
+			} else if (keyCode == 13) {
+				e.preventDefault();
+			}
+		});
+	</script>
+	<script>
+		$('.droppable').live('keydown', function(e) { 
+			var keyCode = e.keyCode || e.which;
+			if (keyCode == 13) {
+				e.preventDefault();
+				$(this).parent().parent().children(':nth-child(2)').children(':nth-child(1)').focus();
+			}
+		});
+	</script>
+	
+	
+	<div id="tagCloud"></div>
+	
+	
+	<!-- My tags -->
+	  	<div class="subcategory" id="tagCloud" >
+			<ul>
+				<% if !current_user.profile.oftentags.nil? %>
+					<% current_user.profile.oftentags.split(",").each do |value| %>
+					    <a class="draggable"><%= value.to_s %></a>&nbsp;&nbsp;-&nbsp;&nbsp;
+					<% end%>
+				<% end %>
+			</ul>  
+		</div>
+	<!-- END - My tags -->
+</div>
+
+<br/>
+<h3 class="green">Project Skills: Type the words that define the knowledge required for your Orbit</h3>
+
+<div id="tags-edit">
+	<table style="width:100%;">
+		<tbody>
+			<tr>
+				<td valign="top">
+					<div class="content">
+						Skill <%= f.text_field :keyword1, :class => "droppable keyword", :onblur => "if(document.getElementById('profile_keyword1').value == '') {document.getElementById('profile_qualifier1').value = '' } "%><br />
+					</div>
+					<div class="example" align="left">
+					  	<font size="-1" color="#6f6f6f">
+					  		Ex: Computer Software
+					  	</font>
+	  				</div>			
+	  			</td>
+	  			<td class="cuadrado"></td>
+				<td>
+					<div class="content" style="height: 30px;">
+						Details <%= f.text_area :qualifier1, :rows => 2, :class => "droppablearea qualifier" %>
+					</div>
+					<div class="example" align="left">
+					  	<font size="-1" color="#6f6f6f">
+					  		Ex: Ruby, Rails, SQL...
+					  	</font>
+	  				</div>
+				</td>
+			</tr>
+			<tr>
+				<td valign="top">
+					<div class="content">
+						Skill <%= f.text_field :keyword2, :class => "droppable keyword", :onblur => "if(document.getElementById('profile_keyword2').value == '') {document.getElementById('profile_qualifier2').value = '' } " %>
+					</div>
+					<div class="example" align="left">
+					  	<font size="-1" color="#6f6f6f">
+					  		Ex: Financial Services 
+					  	</font>
+	  				</div>			
+				</td>
+				<td  class="cuadrado"></td>	
+				<td>
+					<div class="content" style="height: 30px;">
+						Details <%= f.text_area :qualifier2, :rows => 2, :class => "droppablearea qualifier" %>
+					</div>
+					<div class="example" align="left">
+					  	<font size="-1" color="#6f6f6f">
+					  		Ex: HSBC, APJ...
+					  	</font>
+	  				</div>
+				</td>
+			</tr>
+			<tr>
+				<td valign="top">
+					<div class="content">
+						Skill <%= f.text_field :keyword3, :class => "droppable keyword", :onblur => "if(document.getElementById('profile_keyword3').value == '') {document.getElementById('profile_qualifier3').value = '' } " %>
+					</div>
+					<div class="example" align="left">
+					  	<font size="-1" color="#6f6f6f">
+					  		Ex: Project Management
+					  	</font>
+	  				</div>
+	  			</td>
+	  			<td  class="cuadrado"></td>	
+				<td>
+					<div class="content" style="height: 30px;">
+						Details <%= f.text_area :qualifier3, :rows => 2, :class => "droppablearea qualifier" %>
+					</div>
+					<div class="example" align="left">
+					  	<font size="-1" color="#6f6f6f">
+					  		Ex: Agile, SCRUM...
+					  	</font>
+	  				</div>
+				</td>
+			</tr>
+			<tr>
+				<td valign="top">
+					<div class="content">
+						Skill <%= f.text_field :keyword4, :class => "droppable keyword", :onblur => "if(document.getElementById('profile_keyword4').value == '') {document.getElementById('profile_qualifier4').value = '' } " %>
+					</div>
+					<div class="example" align="left">
+					  	<font size="-1" color="#6f6f6f">
+					  		Ex: Printing & Publishing
+					  	</font>
+	  				</div>
+				</td>
+				<td  class="cuadrado"></td>	
+				<td>
+					<div class="content" style="height: 30px;">
+						Details <%= f.text_area :qualifier4, :rows => 2, :class => "droppablearea qualifier" %>
+					</div>
+					<div class="example" align="left">
+					  	<font size="-1" color="#6f6f6f">
+					  		Ex: Adobe Creative Suite, Color Managment...
+					  	</font>
+	  				</div>
+				</td>
+			</tr>
+			<tr>
+				<td valign="top">
+					<div class="content">
+						Skill <%= f.text_field :keyword5, :class => "droppable keyword", :onblur => "if(document.getElementById('profile_keyword5').value == '') {document.getElementById('profile_qualifier5').value = '' } " %>
+					</div>
+					<div class="example" align="left">
+					  	<font size="-1" color="#6f6f6f">
+					  		Ex: Sports & Physical Recreation
+					  	</font>
+	  				</div>
+				</td>
+				<td  class="cuadrado"></td>
+				<td>
+					<div class="content" style="height: 30px;">
+						Details <%= f.text_area :qualifier5, :rows => 2, :class => "droppablearea qualifier" %>
+					</div>
+					<div class="example" align="left">
+					  	<font size="-1" color="#6f6f6f">
+					  		Ex: Baseball...
+					  	</font>
+	  				</div>
+				</td>
+			</tr>
+		</tbody>	
+	</table>	
+</div>
+<!-- SKILLS -->
+<script  type='text/javascript'>
+	var tags = [];
+	
+	<% Tag.find(:all, :select=>'name').each do |keyword| %>
+		tags.push("<%=(keyword.name.html_safe)%>");
+	<% end%>
+	
+	 $( ".keyword" ).autocomplete({
+		source: tags,
+		minLength: 2,
+		select: function( event, ui ) {
+			this.value = ui.item.value;
+			//Change status of dropdown category to Related
+			document.getElementById('category').selectedIndex = "Related";
+			//Get all related tags from chosen tag
+			changeRelated(ui.item.value);
+			
+			return false;
+		}
+	});
+	
+	function split( val ) {
+		return val.split( /,\s*/ );
+	}
+	function extractLast( term ) {
+		return split( term ).pop();
+	}
+
+	$( ".qualifier" )
+		// don't navigate away from the field on tab when selecting an item
+		.bind( "keydown", function( event ) {
+			if ( event.keyCode === $.ui.keyCode.TAB &&
+					$( this ).data( "autocomplete" ).menu.active ) {
+				event.preventDefault();
+			}
+		})
+		.autocomplete({
+			minLength: 2,
+			source: function( request, response ) {
+				// delegate back to autocomplete, but extract the last term
+				response( $.ui.autocomplete.filter(
+					tags, extractLast( request.term ) ) );
+			},
+			search: function() {
+				// custom minLength
+				var term = extractLast( this.value );
+				if ( term.length < 3 ) {
+					return false;
+				}
+			},
+			focus: function() {
+				// prevent value inserted on focus
+				return false;
+			},
+			select: function( event, ui ) {
+				
+				var terms = split( this.value );
+				// remove the current input
+				terms.pop();
+				if($(this).parent().parent().children(':nth-child(1)').children(':nth-child(1)')[0].value != ui.item.value ){
+					// add the selected item
+					terms.push( ui.item.value );
+				} else {
+					alert("The choosen word alredy exist in keyword column");
+				}
+				// add placeholder to get the comma-and-space at the end
+				terms.push( "" );
+				this.value = terms.join( ", " );
+				if (this.value.split(',').length-1 >= 10) {
+					var strLen = this.value.length;
+					this.value = this.value.slice (0, strLen-2);
+				}				
+				//Change status of dropdown category to Related
+				document.getElementById('category').selectedIndex = "Related";
+				//Get all related tags from chosen tag
+				changeRelated(ui.item.value);
+				
+				return false;
+			}
+	});
+
+	function stateChanged() {
+	if (xmlHttp.readyState == 4) {
+		document.getElementById("tagCloud").innerHTML=xmlHttp.responseText;
+		
+		$(".draggable").destroy;
+		$(".droppable").destroy;
+		$(".droppablearea").destroy;
+		$(function() {
+		    $(".draggable").draggable({
+		        helper: 'clone',
+		        cursorAt: { cursor: "move", top: 0, left: 0 }
+		    });
+		    
+		    $(".droppable").droppable({
+		        hoverClass: 'active',
+		        drop: function(event, ui) {
+		            this.value = $(ui.draggable).text();
+		            if (document.getElementById('category').selectedIndex != 0) {
+						//Change status of dropdown category to Related
+						document.getElementById('category').selectedIndex = "Related";
+						//Get all related tags from chosen tag
+						changeRelated($(ui.draggable).text());
+					}
+		        }
+		    });
+		    
+		    $(".droppablearea").droppable({
+		        hoverClass: 'active',
+		        drop: function(event, ui) {
+					this.value = this.value.trim();
+					if (this.value.split(',').toString().search($(ui.draggable).text()) != -1) {
+						this.setSelectionRange(this.value.split(',').toString().search($(ui.draggable).text()),this.value.split(',').toString().search($(ui.draggable).text())+$(ui.draggable).text().length); 
+						this.value = this.value;
+					} else if (this.value == '') {
+						this.value = $(ui.draggable).text() + ', ';
+					} else if (this.value.charAt(this.value.length-1) != ',') {
+						this.value = this.value + ', ' + $(ui.draggable).text() + ', ';
+					} else {
+						this.value = this.value + " " + $(ui.draggable).text() + ', ';
+					}
+					if (document.getElementById('category').selectedIndex != 0) {
+						//Change status of dropdown category to Related
+						document.getElementById('category').selectedIndex = "Related";
+						//Get all related tags from chosen tag
+						changeRelated($(ui.draggable).text());
+					}		          
+		        }
+		    });
+		});
+	}
+}
+</script>
+
+<!-- Scrollbar in autocomplete-->
+<style>
+	.ui-autocomplete {
+		max-height: 200px;
+		overflow-y: auto;
+		/* prevent horizontal scrollbar */
+		overflow-x: hidden;
+		/* add padding to account for vertical scrollbar */
+		padding-right: 20px;
+	}
+	/* IE 6 doesn't support max-height
+	 * we use height instead, but this forces the menu to always be this tall
+	 */
+	* html .ui-autocomplete {
+		height: 200px;
+	}
+</style>
+<!-- END - Scrollbar in autocomplete-->
+
+<!-- SKILLS(END) -->   
+<input id="job_submit" name="commit" type="submit" value="Save" class="button">

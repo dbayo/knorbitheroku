@@ -1,0 +1,137 @@
+<% if !notice.nil? %>
+	<div id="noticesuccess">
+		<%= image_tag("visto.png", :alt => "operation status") %><span class="green"><%= notice %></span><hr />
+	</div>
+<% end%>
+<!-- Actions.--> 
+<% if @job.user.id == current_user.id %>
+	<input type="button" value="Orbit attributes" class="button" onclick="location.href='<%=job_path(@job)%>'">
+<% end %>
+<% if !Sharedjob.where(:to_email => current_user.email, :job_id => @job.id).exists? && !Contribution.where(:user_id => current_user.id, :job_id => @job.id).exists? && current_user.id != @job.user.id %>
+	<input type="button" value="Add to My Trail" class="button" onclick="location.href='<%=addtomytrail_sharejob_path(@job.wikispace)%>'">
+<% end %>
+<input type="button" value="Export to PDF" class="button" onclick="location.href='/spaces/<%= @space.wiki_name%>/exportPDF.pdf'"><br /><hr>	
+<!-- Añade esta etiqueta donde quieras colocar el botón +1 -->
+<g:plusone></g:plusone>
+<iframe src="http://www.facebook.com/plugins/like.php?href='http://50.19.237.77<%=@job.wiki%>'&amp;layout=button_count&amp;show_faces=true&amp;width=100&amp;action=like&amp;font=arial&amp;colorscheme=light" scrolling="no" frameborder="0" allowTransparency="true" style="border:none; overflow:hidden; width:130px; height:20px"></iframe>
+
+<h2>Table of contents</h2>
+<p><b>Title : </b><%=@job.name %></p><p><b>Author : </b><%=@job.user.name%></p><p><b>Description : </b><%=@job.description%></p><p><b>Job Sections : </b></p>
+<div id="content">
+	<% if !@space.content.nil? and !@space.content.empty?  %>
+		<p><%= @space.content.html_safe %></p>
+	<% end%>
+</div><br/>
+
+<%= form_for(@space) do |f| %>
+
+	<!-- Comments of the document.-->
+	<h3 class="green"><%= image_tag("spindown-open.gif") %> Comments</h3>
+	<div style="margin-left: 10px;">
+		<div id="allcomments">
+			<table>			
+			<% @comments[0,5].each do |comment| %>
+				<tr>
+					<td rowspan="2" style="padding-bottom: 20px;"><%= gravatar_for(comment.user, :size=>30) %></td>
+					<td>
+						<b class="user<%=comment.user.id%>"><%= comment.user.name %></b> - 
+					  	<%= comment.comment %>
+					</td> 
+				</tr>
+				<tr>
+					<td style="padding-bottom: 20px;">
+						<font size="-1" color="#6f6f6f">
+					  		<%= time_ago_in_words(comment.created_at) %> ago.
+					  	</font>
+				  	</td>
+				</tr>	
+			<% end %>
+			</table>
+			
+			<% if @comments.length > 5 %>
+				<div id="comments" style="display:none;">
+					<table>	
+					<% @comments[5,@comments.length].each do |comment| %>
+						<tr>
+							<td rowspan="2" style="padding-bottom: 20px;"><%= gravatar_for(comment.user, :size=>30) %></td>
+							<td>
+								<b class="user<%=comment.user.id%>"><%= comment.user.name %></b> - 
+							  	<%= comment.comment %>
+							</td> 
+						</tr>
+						<tr>
+							<td style="padding-bottom: 20px;">
+								<font size="-1" color="#6f6f6f">
+							  		<%= time_ago_in_words(comment.created_at) %> ago.
+							  	</font>
+						  	</td>
+						</tr>	
+					<% end %>
+					</table>
+				</div>
+				<%= image_tag("spindown-closed.gif", :id => "commentsimage") %> <a id="textcomments" onclick="showcomments()" style="color:green; cursor:pointer;">More comments...</a><br/><br/>
+			<% end%>
+		</div>
+		<%= text_area_tag :comment, '', :style => "width: 100%;" %>
+		<br/><br/>
+		<%= f.submit "Save comment", :class => "button"%><br/><br/>
+	</div>
+<% end %>
+
+
+<!-- Version of the document.-->
+<% if @job.user.id == current_user.id %>
+	<h3 class="green"><%= image_tag("spindown-closed.gif", :id => "versionsimage") %> <a onclick="showversions()" style="font-weight: bold;cursor:pointer;">Versions</a></h3>
+	<div style="margin-left: 10px;">
+		<div id="versions" style="display:none;">
+			<table>
+			<% @space.versions.each do |version| %>
+				<tr>
+					<td rowspan="2" style="padding-bottom: 20px;"><%= gravatar_for(version.user, :size=>30) %></td>
+					<td>
+						<b class="user<%=version.user.id%>"><%= version.user.name %></b> - 
+					  	<a href="/spaces/<%= @space.wiki_name%>/version/<%=version.id %>"><%= version.name %></a>
+					</td> 
+				</tr>
+				<tr>
+					<td style="padding-bottom: 20px;">
+						<font size="-1" color="#6f6f6f">
+					  		<%= time_ago_in_words(version.created_at) %> ago.
+					  	</font>
+				  	</td>
+				</tr>
+			<% end %>
+			<tr>
+				<td colspan="2"><input type="button" value="Save this version" class="button" onclick="location.href='<%=job_path(@job)%>#tabs-5'"><br /></td>
+			</tr>
+			</table>
+		</div>
+	</div>
+<%end%>
+
+<script>
+// Expand/collapse the comments of the space
+function showcomments() {
+	if (document.getElementById('comments').style.display == 'none') {
+		document.getElementById('comments').style.display = 'block';
+		document.getElementById('commentsimage').src = '/images/spindown-open.gif';
+		document.getElementById('textcomments').innerHTML = 'Hide comments...';
+	}else{
+		document.getElementById('comments').style.display = 'none';
+		document.getElementById('commentsimage').src = '/images/spindown-closed.gif';
+		document.getElementById('textcomments').innerHTML = "More comments..."
+	}
+
+}
+
+// Expand/collapse the versions of the document
+function showversions() {
+	if (document.getElementById('versions').style.display == 'none') {
+		document.getElementById('versions').style.display = 'block';
+		document.getElementById('versionsimage').src = '/images/spindown-open.gif';
+	}else{
+		document.getElementById('versions').style.display = 'none';	
+		document.getElementById('versionsimage').src = '/images/spindown-closed.gif';
+	}
+}
+</script>

@@ -1,0 +1,529 @@
+<!-- Dinamically addad style -->
+<style type="text/css">
+
+<% if @users_in_doc != nil %>
+
+  <% @users_in_doc.each do |doc_user| %>
+.<%=doc_user[:id]%>
+{
+color:<%=doc_user[:color]%>;
+}
+  <% end %>
+<% end %>
+</style>
+
+<% if Sharedjob.where(:to_email => current_user.email, :job_id => @job.id).exists? || Contribution.where(:user_id => current_user.id, :job_id => @job.id).exists? || current_user.id == @job.user.id %>
+	<% if !notice.nil? %>
+		<div id="noticesuccess">
+			<% if notice == "Saved" %>
+				<%= image_tag("visto.png", :alt => "operation status") %><span class="green"><%= notice %></span><hr />
+			<%elsif%>
+				<%= image_tag("deadlines.png", :alt => "operation status") %><span class="red"><%= notice %></span><hr />
+			<% end%>
+		</div>
+	<% end%>
+	
+	<script type="text/javascript">
+		document.getElementsByClassName('header3')[0].innerHTML = "";
+		document.getElementById('user-popup').innerHTML = "";
+		document.getElementById('recent-popup').innerHTML = "";	
+		document.getElementById('content').style.paddingTop = "10px";
+	</script>
+	
+	<script>
+		var flag = true;
+		$(window).bind('beforeunload', function() {
+			if (flag == false) {
+				return 'If you don\'t save the document the changes done will be lost. Are you sure you want to leave this page?';	
+			}
+	    });
+	</script>
+	
+	<!-- Actions.-->
+	<h2><%= truncate(@job.name, :length => 40)%></h2>
+	<input type="button" value="Table of contents" class="button" onclick="location.href='<%=@job.wiki%>'">
+	<% if @job.user.id == current_user.id %>
+		<input type="button" value="Orbit attributes" class="button" onclick="location.href='<%=job_path(@job)%>'">
+	<% end %>
+	<br/><hr>
+	
+	<%= form_for([@space, @document]) do |f| %>
+		<!-- Set content and name of the document for the document_controller can get it -->
+	  	<%= f.hidden_field :content, :value => @document.content%>
+	  	<%= f.hidden_field :name, :value => @document.name%>
+		<%= f.hidden_field :updated_at, :value => @document.updated_at%>
+		
+		<!-- The index of the space: The user can not modify the content. Show information about the job.
+			 The remaining pages of the space: The contributors and the owner can modify the content. Only the owner can modify the title.
+			 	The user can modify the job when it is draft or open status. 
+		-->
+	
+		<!-- END Dinamically addad style -->
+		<div style="float:right;">
+			<%=  link_to_function 'All Black', 'styleA();' %> | 
+			<%=  link_to_function 'Black Gray', 'styleB();' %> | 
+			<%=  link_to_function 'Colored', 'styleC();' %>
+		</div>
+		
+		<!-- Title of document-->	
+		<h2 id="title"><%= @document.name %></h2>
+
+
+<!-- Users floating div -->
+<style type="text/css">
+    
+    #users {
+    	width: 10%;
+	    -webkit-border-radius: 5px;
+	   	-moz-border-radius: 5px;
+	   	border-radius: 15px;
+		border: #96d43c 4px solid;
+		padding: 10px;
+		padding-top: 0px;
+	    float:right;
+    }
+    
+    .alohacontent {
+    	width: 85%; 
+    }
+</style>
+<script type="text/javascript">
+	b = 1;
+	window.onscroll = function()
+	{
+		if( window.XMLHttpRequest ) { // IE 6 doesn't implement position fixed nicely...
+			if ((b == 0) && (self.pageYOffset > 263)) {
+				b = 1;
+				posicionReal = $("#users").offset();
+							
+				document.getElementById('users').style.position = 'fixed'; 
+				document.getElementById('users').style.top = '0px';
+				document.getElementById('users').style.left = posicionReal.left;
+				document.getElementById('users').style.width = $("#users").width();
+				
+			} else if (self.pageYOffset < 263) {
+				b = 0;
+				document.getElementById('users').style.position = 'relative'; 
+				document.getElementById('users').style.top = 'auto';
+				document.getElementById('users').style.left = '0px';
+				document.getElementById('users').style.width = '10%';
+			}
+		}
+	}
+</script>
+
+
+
+	
+<% if @users_in_doc != nil %>
+	<div id="users">
+		<h4 class="green" style="text-align: left;">Contributors</h4>
+  		<% @users_in_doc.each do |doc_user| %>
+  			<% if doc_user[:box] %>
+	            <input type="checkbox" id="cb<%=doc_user[:id]%>" onClick="changeUserStyle(this,'<%=doc_user[:id]%>')"  value="true" checked />
+  				<span class="<%=doc_user[:id]%>"><%=doc_user[:name]%></span><br/>
+  			<% end %>
+	    <% end %>
+    </div>
+<% end %>
+<!-- END Users floating div -->
+		
+		<!-- The users can use aloha editor.-->
+		<% if (@job.user.id == current_user.id or !Contribution.where(:user_id => current_user.id, :job_id => @job.id)[0].nil?) and (@job.status == "draft" or @job.status == "open") %>
+			<div id="content" class="edit_content alohacontent" style="background-color: #eaf6d8; min-height: 300px;">
+		<% else %>
+			<div id="content" class="alohacontent">
+		<% end %>
+			<% if @document.content.nil? or @document.content.empty?  %>
+				<p>Type here ...</p>
+			<% else %>
+				<%= @document.content.html_safe %>
+			<% end%>
+		</div>
+		<br/>
+		<%= f.submit :save, :class => "button", :onClick => "flag = true;", :style => "float:right; margin-right: 15%;"%>
+		<!-- If there is a conflict - show the version on the DB vs the edited version-->
+		<% if (notice != "Saved" and !@edited_content.nil?)  %>	
+			<br/><hr/><br/>
+			<span class="red">Your version conflicts with a newer version. Please solve the conflict by fixing the version in the DB with your edits below</span>
+			<div>
+				<%= @edited_content.html_safe %>
+			</div>
+			<br/><br/><hr/><br/>
+			<%= image_tag("spindown-closed.gif", :id => "diffsimage") %> <a onclick="showdiffs()" style="font-weight: bold;cursor:pointer;">Conflict Details</a>
+			<br/>
+			<div id="diffs" style="display:none;">	
+				Your version in <span class="red">red</span> conflicts with a newer version in <spam class="green">green</spam>
+				<br/><hr/><br/>
+				<div>
+					<%= @diff.html_safe %>
+				</div>
+			</div>
+		<% end%>
+		<br/><br/><hr/>
+		<!-- Comments of the document.-->
+		<h3 class="green"><%= image_tag("spindown-open.gif") %> Comments</h3>
+		<div style="margin-left: 10px;">
+			<div id="allcomments">
+				<table>			
+				<% @comments[0,5].each do |comment| %>
+					<tr>
+						<td rowspan="2" style="padding-bottom: 20px;"><%= gravatar_for(comment.user, :size=>30) %></td>
+						<td>
+							<b class="user<%=comment.user.id%>"><%= comment.user.name %></b> - 
+						  	<%= comment.comment %>
+						</td> 
+					</tr>
+					<tr>
+						<td style="padding-bottom: 20px;">
+							<font size="-1" color="#6f6f6f">
+						  		<%= time_ago_in_words(comment.created_at) %> ago.
+						  	</font>
+					  	</td>
+					</tr>	
+				<% end %>
+				</table>
+				
+				<% if @comments.length > 5 %>
+					<div id="comments" style="display:none;">
+						<table>	
+						<% @comments[5,@comments.length].each do |comment| %>
+							<tr>
+								<td rowspan="2" style="padding-bottom: 20px;"><%= gravatar_for(comment.user, :size=>30) %></td>
+								<td>
+									<b class="user<%=comment.user.id%>"><%= comment.user.name %></b> - 
+								  	<%= comment.comment %>
+								</td> 
+							</tr>
+							<tr>
+								<td style="padding-bottom: 20px;">
+									<font size="-1" color="#6f6f6f">
+								  		<%= time_ago_in_words(comment.created_at) %> ago.
+								  	</font>
+							  	</td>
+							</tr>	
+						<% end %>
+						</table>
+					</div>
+					<%= image_tag("spindown-closed.gif", :id => "commentsimage") %> <a id="textcomments" onclick="showcomments()" style="color:green; cursor:pointer;">More comments...</a><br/><br/>
+				<% end%>
+			</div>
+			<%= text_area_tag :comment, '', :style => "width: 100%;" %>
+				<br/><br/>
+			<input type="button" value="Save comment" class="button" onclick="saveComment();"><br />
+		</div>
+
+		<!-- Version of the document.-->
+		<% if @job.user.id == current_user.id %>
+			<h3 class="green"><%= image_tag("spindown-closed.gif", :id => "versionsimage") %> <a onclick="showversions()" style="font-weight: bold;cursor:pointer;">Versions</a></h3>
+			<div style="margin-left: 10px;">
+				<div id="versions" style="display:none;">
+					<table>
+					<% @document.versions.each do |version| %>
+						<tr>
+							<td rowspan="2" style="padding-bottom: 20px;"><%= gravatar_for(version.user, :size=>30) %></td>
+							<td>
+								<b class="user<%=version.user.id%>"><%= version.user.name %></b> - 
+							  	<a href="<%= @document.id%>/versions/<%=version.version %>"><%= version.version %></a>
+							</td> 
+						</tr>
+						<tr>
+							<td style="padding-bottom: 20px;">
+								<font size="-1" color="#6f6f6f">
+							  		<%= time_ago_in_words(version.created_at) %> ago.
+							  	</font>
+						  	</td>
+						</tr>
+					<% end %>
+					</table>
+				</div>
+			</div>
+		<%end%>
+	<% end %>
+	
+	<!-- Aloha editor and plugins-->
+	<%= javascript_include_tag 'aloha/aloha/aloha.js' %>
+	<%= javascript_include_tag 'aloha/aloha/plugins/com.gentics.aloha.plugins.Format/plugin.js' %>
+	<%= javascript_include_tag 'aloha/aloha/plugins/com.gentics.aloha.plugins.Table/plugin.js' %>
+	<%= javascript_include_tag 'aloha/aloha/plugins/com.gentics.aloha.plugins.List/plugin.js' %>
+	<%= javascript_include_tag 'aloha/aloha/plugins/com.gentics.aloha.plugins.HighlightEditables/plugin.js' %>
+	<%= javascript_include_tag 'aloha/aloha/plugins/com.gentics.aloha.plugins.Link/plugin.js' %>
+	<%= javascript_include_tag 'aloha/aloha/plugins/com.gentics.aloha.plugins.Paste/plugin.js' %>
+	<%= javascript_include_tag 'aloha/aloha/plugins/com.gentics.aloha.plugins.Link/LinkList.js' %>
+	<%= javascript_include_tag 'aloha/aloha/plugins/com.gentics.aloha.plugins.Link/delicious.js' %>
+	<%= javascript_include_tag 'aloha/aloha/plugins/com.gentics.aloha.plugins.Paste/wordpastehandler.js' %>
+	
+	
+	
+	
+	<!-- Function to change css rules --> 
+	<script type="text/javascript"> 
+		//Default style
+		var style = 'C';
+		var stylesData = { };
+		var users = [];
+		stylesData['A'] = {};
+		stylesData['B'] = {};
+		stylesData['C'] = {};
+		<% if @users_in_doc != nil %>
+			<% @users_in_doc.each do |doc_user| %>
+				users.push("<%=doc_user[:id]%>");
+				stylesData['A'][".<%=doc_user[:id]%>"] = "<%=doc_user[:colorA]%>";
+				stylesData['B'][".<%=doc_user[:id]%>"] = "<%=doc_user[:colorB]%>";
+				stylesData['C'][".<%=doc_user[:id]%>"] = "<%=doc_user[:colorC]%>";
+			<% end %>
+		<% end %>
+
+		function cssRuleGet(selectorText) {
+		  var styleSheet, rules, i, ii;
+		  selectorText=selectorText.toLowerCase();
+		  if (!document.styleSheets) {
+		    return false;
+		  }
+		  for (i=0; i<document.styleSheets.length; i++) {
+		    try{
+		      styleSheet=document.styleSheets[i];
+		      rules = (styleSheet.cssRules ? styleSheet.cssRules : styleSheet.rules);
+		      for (ii=0; ii<rules.length; ii++) {
+		        if (
+		          rules[ii] && rules[ii].selectorText &&
+		          rules[ii].selectorText.toLowerCase()===selectorText
+		        ){
+		          return (rules[ii]);
+		        }
+		      }
+		    }
+		    catch(e){
+		      // Do nothing!
+		    };
+		  }
+		  return false;
+		}
+		
+		function changeUserStyle(obj, user) {
+			if(obj.checked) {
+				var attr = cssRuleGet("." + user);
+				attr.style.color = stylesData[style]['.'+user];
+			} else {
+				var col;
+				
+				if(style == 'C') 
+					col = 'gray';
+				else
+					col = 'black';
+					
+				var attr = cssRuleGet("." + user);
+				attr.style.color = col;
+			}
+				
+		}
+		
+		function changeStyle(styleData) {
+			for(var sty in styleData){
+				var attr = cssRuleGet(sty);
+				attr.style.color = styleData[sty];
+			}
+		}
+		
+		function styleA() {
+			disableCboxes();
+			changeStyle(stylesData['A']);			
+			style = 'A';
+		}
+		
+		function styleB() {
+			enableCboxes();
+			changeStyle(stylesData['B']);	
+			style = 'B';		
+		}
+
+		function styleC() {
+			enableCboxes();
+			changeStyle(stylesData['C']);	
+			style = 'C';	
+		}
+		
+		function enableCboxes(){
+			for(var i = 0; i < users.length; i++){
+			    document.getElementById('cb'+users[i]).checked = true;
+			    document.getElementById('cb'+users[i]).disabled = false;
+			}
+		}
+
+		function disableCboxes(){
+			for(var i = 0; i < users.length; i++){
+			    document.getElementById('cb'+users[i]).checked = false;
+			    document.getElementById('cb'+users[i]).disabled = true;
+			}
+		}
+	</script>
+	
+	
+	
+	
+	<!-- Options of aloha editor. --> 
+	<script type="text/javascript"> 
+	GENTICS.Aloha.settings = {
+		logLevels: {'error': true, 'warn': true, 'info': true, 'debug': false},
+		errorhandling : false,
+		ribbon: false,	
+		"i18n": {
+			"current": "en" 
+		},
+			"plugins": {
+				 	"com.gentics.aloha.plugins.Format": {
+					 	// all elements with no specific configuration get this configuration
+						config : [ 'b', 'i','sub','sup', 'p', 'title', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'pre', 'removeFormat'],
+					  	editables : {
+							// no formatting allowed for title
+							'#title'	: [ ], 
+					  	}
+					},
+				 	"com.gentics.aloha.plugins.List": { 
+					 	// all elements with no specific configuration get an UL, just for fun :)
+						config : [ 'ul' , 'ol'],
+					  	editables : {
+							// Even if this is configured it is not set because OL and UL are not allowed in H1.
+							'#title'	: [  ], 
+					  	}
+					},
+				 	"com.gentics.aloha.plugins.Link": {
+					 	// all elements with no specific configuration may insert links
+						config : [ 'a' ],
+					  	editables : {
+							// No links in the title.
+							'#title'	: [  ]
+					  	},
+					  	// all links that match the targetregex will get set the target
+			 			// e.g. ^(?!.*aloha-editor.com).* matches all href except aloha-editor.com
+					  	targetregex : '^(?!.*aloha-editor.com).*',
+					  	// this target is set when either targetregex matches or not set
+					    // e.g. _blank opens all links in new window
+					  	target : '_blank',
+					  	// the same for css class as for target
+					  	cssclassregex : '^(?!.*aloha-editor.com).*',
+					  	cssclass : 'aloha',
+					  	// use all resources of type website for autosuggest
+					  	objectTypeFilter: ['website'],
+					  	// handle change of href
+					  	onHrefChange: function( obj, href, item ) {
+						  	if ( item ) {
+								jQuery(obj).attr('data-name', item.name);
+						  	} else {
+								jQuery(obj).removeAttr('data-name');
+						  	}
+					  	}
+					},
+				 	"com.gentics.aloha.plugins.Table": { 
+					 	// all elements with no specific configuration are not allowed to insert tables
+						config : [ 'table' ]
+					}
+			  	}
+	};
+	GENTICS.Aloha.FloatingMenu.pinned=true;
+	
+	GENTICS.Aloha.Repositories.delicious.settings.username="<%= (current_user.account.delicious.nil? ? "knorbit" : current_user.account.delicious) %>";
+	
+	GENTICS.Aloha.Repositories.LinkList.settings.data=[
+		{name:"Knorbit",url:"http://www.knorbit.com",type:"website"}];
+	
+	// Set the repository to link to existing spaces
+	$.getJSON("/orbits.json",
+	  {
+	  	 format: "json"
+	  },
+	  function(data) {
+		for (var i = 0; i < data.length; i++) {
+			var orbit_name = data[i].job.name;
+			
+			GENTICS.Aloha.Repositories.LinkList.settings.data.push({name: orbit_name, 
+							url: "/orbits/"+ orbit_name, 
+							type: 'website'});				
+			// For each space get the list of "documents" - note this is also getting the content which is not necesary at all.
+			$.getJSON("/orbits/"+orbit_name+"/sections.json",
+				{
+				  	 format: "json"
+				 },
+				function(docs) {
+					for (var j = 0; j < docs.length; j++) {		
+						GENTICS.Aloha.Repositories.LinkList.settings.data.push({name: docs[j].document.name, 
+										url: "/orbits/"+ data[i].job.name+"/sections/"+docs[j].document.id+".html", 
+										type: 'website'});
+					}
+					GENTICS.Aloha.Repositories.LinkList.init();	
+				});
+			GENTICS.Aloha.Repositories.LinkList.init();	
+					
+			} 
+			GENTICS.Aloha.Repositories.LinkList.init();		
+		});
+	
+		
+	</script>
+	
+	<!-- Set the content and title in such hidden field for the controller can get it. -->
+	<script type="text/javascript">
+		$('.edit_content').aloha();
+		
+		GENTICS.Aloha.EventRegistry.subscribe(GENTICS.Aloha, "editableDeactivated", saveEditable);
+		function saveEditable(event, eventProperties) {
+			if ( document.getElementById("document_content").value.trim() != eventProperties.editable.getContents().trim() ) {
+				flag = false;
+			}	
+			document.getElementById("document_content").value = eventProperties.editable.getContents();
+		}
+	
+		// Expand/collapse the versions of the document
+		function showversions() {
+			if (document.getElementById('versions').style.display == 'none') {
+				document.getElementById('versions').style.display = 'block';
+				document.getElementById('versionsimage').src = '/images/spindown-open.gif';
+			}else{
+				document.getElementById('versions').style.display = 'none';	
+				document.getElementById('versionsimage').src = '/images/spindown-closed.gif';
+			}
+		}
+		
+		// Expand/collapse the comments of the space
+		function showcomments() {
+			if (document.getElementById('comments').style.display == 'none') {
+				document.getElementById('comments').style.display = 'block';
+				document.getElementById('commentsimage').src = '/images/spindown-open.gif';
+				document.getElementById('textcomments').innerHTML = 'Hide comments...';
+			}else{
+				document.getElementById('comments').style.display = 'none';
+				document.getElementById('commentsimage').src = '/images/spindown-closed.gif';
+				document.getElementById('textcomments').innerHTML = "More comments..."
+			}
+		}
+		
+		// Expand/collapse the diff 
+		function showdiffs() {
+			if (document.getElementById('diffs').style.display == 'none') {
+				document.getElementById('diffs').style.display = 'block';
+				document.getElementById('diffsimage').src = '/images/spindown-open.gif';
+			}else{
+				document.getElementById('diffs').style.display = 'none';
+				document.getElementById('diffsimage').src = '/images/spindown-closed.gif';
+			}
+		}
+	
+		// Ajax - Save a comment		
+		function commentSaved() {
+			if (xmlHttp.readyState == 4) {				
+				document.getElementById('allcomments').innerHTML = xmlHttp.responseText;
+				document.getElementById('comment').value = '';
+			}
+		}	
+	</script>
+
+<%else%>
+	<div id="noticesuccess">
+		<% @invitation = Invitations.find(:first, :conditions => ['status = ? and to_email = ? and job_id = ?', 'pending', current_user.email, @job.id ]) %>
+		<% if @invitation.nil? %>
+			<%= image_tag("blocked.png") %><span style="color: red"> Invalid access.</span><br/>
+		<% else %>
+			<%= image_tag("blocked.png") %><span style="color: red"> Invalid access. To see the content of this section, you should accept the invitation : <%= link_to 'Accept invitation', '/invitations/'+@invitation.id.to_s+'/accept' %></span><br/>
+		<% end %>
+	</div>
+<%end%>

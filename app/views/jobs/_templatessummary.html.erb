@@ -1,0 +1,227 @@
+<style>
+	#sortable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
+	#sortable li { margin: 0 5px 5px 5px; padding: 5px; font-size: 1.2em; height: 1.5em; }
+	html>body #sortable li { height: 1.5em; line-height: 1.2em; }
+	.ui-state-highlight { height: 1.5em; line-height: 1.2em; }
+	.name { position: absolute; border-style: solid; border-width: 0; color: black !important;  background-color: transparent !important; width: 550px; padding-left: 20px !important;}
+	.inputchangename { position: absolute; border-style: solid; border-width: 0; color: black !important;  background-color: transparent !important; width: 550px;}
+	.inputchangeheaderopened {  color: black !important; }
+	.inputchangenameover { border-style: solid !important; border-width: 2px !important; color: black !important; background: white !important;}
+	.inputchangenamefocus { border-style: solid !important; border-width: 2px !important; color: black !important; background: white !important;}
+</style>
+<h3 class="green">
+	Select or create the sections interesting to your project.<br />
+	You can add sections, change the name of the sections and the order of them.
+</h3>
+<input id="add_tab" type="button" value="Add section" class="button"><br />
+
+<div id="accordion">
+	<% if !@job.template.nil? %>
+		<% @job.template.split(",").each do |page|%>
+			<% @doc = Space.find(:first, :conditions => ['wiki_name = ?', @job.wikispace ]).documents.where('name = ?', page)[0] %>
+			<div id="<%=@doc.name%>">
+				<h3 style="height: 45px;"><%= image_tag("move.png", :style => "float:left; margin-left: 10px; margin-top: 10px;")%>
+					<a href="#" class="duplicate" style="float:right; margin-right: 10px; width: 25px; height: 25px;"><%= image_tag("duplicate.png", :style => "width: 26px;")%></a>
+					<a href="#" class="name" style="margin-left: 35px; margin-top: 5px;"><%=@doc.name%></a>		
+				</h3>
+				<% if !@doc.content.nil? && !@doc.content.empty? %>
+					<div id="<%=@doc.id%>" style="min-height: 30px;">
+						<%=@doc.content.html_safe unless @doc.content.nil?%>				
+					</div>
+				<% end %>
+			</div>
+		<% end %>
+	<% end %>	
+</div>
+
+<%= hidden_field_tag "pagesDeleted"%>
+<%= hidden_field_tag "changedNames"%>
+<br/>
+<input id="job_submit" name="commit" type="submit" value="Save" class="button">
+
+<div id="addtemplate" title="Add section">
+	<form>
+		<fieldset class="ui-helper-reset">
+			<label for="tab_title">Title</label>
+			<input type="text" name="tab_title" id="tab_title" value="" class="ui-widget-content ui-corner-all" style="border:solid 1px; float: right; width:80%;"/>
+		</fieldset>
+	</form>
+</div>
+
+<script type="text/javascript">
+
+$(function() {
+	var title = $( "#tab_title" ),
+	allFields = $( [] ).add( title );
+	arrayPagesDeleted = new Array();
+	arrayChangedTitles = new Array();
+	// modal dialog init: custom buttons and a "close" callback reseting the form inside
+	var $dialog = $( "#addtemplate" ).dialog({
+		autoOpen: false,
+		modal: true,
+		buttons: {
+			Add: function() {
+				if ($( '#tab_title' ).val() == "") {
+					alert("title can not be empty");
+					return false;
+				}
+				if( $('#accordion').sortable('toArray').toString().search($( '#tab_title' ).val()) != -1) {
+					alert("There is other section with the same name");
+					return false;
+				}
+				$( '#accordion' ).append( '<div id="'+$( '#tab_title' ).val()+'"> <h3><img alt="Move" src="/images/move.png" style="float:left; margin-left: 10px; margin-top: 10px;"><a href="#" class="duplicate" style="float:right; margin-right: 10px; width: 25px; height: 25px;"><img alt="Duplicate" src="/images/duplicate.png" style="width: 29px;" class="inputchangeheaderopened"></a><a href="#" class="close" style="float:right; width: 25px; height: 25px;"><img alt="Remove" src="/images/remove.png" style="width: 29px;"></a><a href="#" style="margin-left: 35px; margin-top: 5px;"><input class="inputchangename" name="primercampo" type="text" value="'+$( '#tab_title' ).val()+'" id="'+$( '#tab_title' ).val()+'" /><img alt="Save" src="/images/save.png" style="margin-left: 560px; visibility: hidden; "></a></h3><div><div style="min-height: 30px;"></div></div>' );				
+				resetaccordion();
+				$( this ).dialog( "close" );
+			},
+			Cancel: function() {
+				$( this ).dialog( "close" );
+			}
+		},
+		open: function() {
+			$tab_title_input.focus();
+		},
+		close: function() {
+			allFields.val( "" ).removeClass( "ui-state-error" );
+		}
+	});
+});
+
+$(function() {
+	var sectionName;
+	var newSectionName;
+	$( "#accordion a.duplicate" ).live( "click", function() {
+		var nombre = prompt('Introduce el nombre de la nueva seccion','');
+		while(nombre == '' || nombre == null || jQuery.inArray(nombre, $('#accordion').sortable('toArray')) != -1) {
+			if (nombre == null) { return false }
+			nombre = prompt('Introduce el nombre de la nueva seccion','');					
+		}
+		$(".inputchangename").removeClass( "inputchangeheaderopened");
+		newSectionName = nombre;
+		var space_id = <%=@space.id%>;
+		sectionName = $( this ).parent().parent().attr('id');
+		getcontentsection(space_id);
+	});
+	
+	$( "#accordion a.close" ).live( "click", function() {
+		$( this ).parent().parent().remove();
+		$( '#accordion' ).accordion('destroy');
+		if ($('#accordion').sortable('toArray').toString() == '') {
+			document.getElementById('template').selectedIndex = 1;
+			changeTemplate();
+			return false;
+		}			
+		resetaccordion();
+	});
+	
+	function getcontentsection( space_id) {
+		xmlHttp=GetXmlHttpObject();
+		if (xmlHttp == null) {
+			alert("Your browser does not support AJAX");
+			return;
+		}
+		var url="/jobs/1/duplicateSectionAjax";
+		url=url+"?section="+escape(sectionName)+"&space_id="+space_id+"&newSection="+escape(newSectionName);
+		xmlHttp.onreadystatechange=resultcontent;
+		xmlHttp.open("GET",url,true);
+		xmlHttp.send(null);
+	}
+
+	function resultcontent(){
+		if (xmlHttp.readyState == 4) {
+			$( '#accordion' ).append( '<div id="'+newSectionName+'"><h3><img alt="Move" src="/images/move.png" style="float:left; margin-left: 10px; margin-top: 10px;"><a href="#" class="duplicate" style="float:right; margin-right: 10px; width: 25px; height: 25px;"><img alt="Duplicate" src="/images/duplicate.png" style="width: 29px;" class="inputchangeheaderopened"></a><a href="#" class="close" style="float:right; width: 25px; height: 25px;"><img alt="Remove" src="/images/remove.png" style="width: 29px;"></a><a href="#" style="margin-left: 35px; margin-top: 5px;"><input class="inputchangename" name="primercampo" type="text" value="'+newSectionName+'" id="'+newSectionName+'" /><img alt="Save" src="/images/save.png" style="margin-left: 560px; visibility: hidden; "></a></h3><div><div style="min-height: 30px;">'+xmlHttp.responseText+'</div></div>' ).accordion('destroy');
+			resetaccordion();
+		}
+	}
+	
+	// addTab button: just opens the dialog
+	$( "#add_tab" ).click(function() {
+		$dialog.dialog( "open" );
+	});		
+});
+</script>
+<script>
+	function resetaccordion() {
+			var stop = false;
+			
+			$( "#accordion" ).accordion('destroy');		
+			$( "#accordion h3" ).click(function( event ) {
+				if ( stop ) {
+					event.stopImmediatePropagation();
+					event.preventDefault();
+					stop = false;
+				}
+			});
+				
+			$( "#accordion" )
+				.accordion({
+					header: "> div > h3",
+					collapsible: true,
+					active: -1,
+					autoHeight: false,
+					changestart: function(event, ui) {
+						$(ui.newHeader).children(':nth-child(2)').children(':nth-child(1)').addClass( "inputchangeheaderopened");
+						$(ui.oldHeader).children(':nth-child(2)').children(':nth-child(1)').removeClass( "inputchangeheaderopened");
+					}
+				})
+				.sortable({
+					axis: "y",
+					handle: "h3",
+					stop: function() {
+						stop = true;
+					}
+			});
+				
+			$('.inputchangename').blur(function() {
+				$(this).parent().children(':nth-child(2)').css('visibility', 'hidden');
+				focus = false;
+				$(this).removeClass( "inputchangenameover");
+				if ($( this )[0].value == $( this )[0].id) {
+					return false;
+				}
+			  	if ($( this )[0].value == "") {
+					alert("The name can not be empty");
+					$( this )[0].value = $( this )[0].id;
+					return false;
+				}
+				if( $('#accordion').sortable('toArray').toString().search($( this )[0].value) != -1) {
+					alert("There is other section with the same name");
+					$( this )[0].value = $( this )[0].id;
+					return false;
+				}
+				var exist = jQuery.inArray( $( this ).parent().parent().parent()[0].id + '->>' + $( this )[0].id, arrayChangedTitles )
+				if (exist == -1) {
+					arrayChangedTitles.push($( this ).parent().parent().parent()[0].id + '->>' + $( this )[0].value);
+				} else {
+					arrayChangedTitles[exist] = $( this ).parent().parent().parent()[0].id + '->>' + $( this )[0].value;
+				}
+				
+				$( this )[0].id = $( this )[0].value;
+				$( this ).parent().parent().parent()[0].id = $( this )[0].value;
+			});
+
+			var focus = false;
+			$( ".inputchangename").click(function() {
+				$(this).addClass( "inputchangenameover");
+				$(this).parent().children(':nth-child(2)').css('visibility', 'visible');
+				stop = true;
+				focus = true;
+			});
+			
+			$( ".inputchangename").mouseover(function() {
+				if (focus == false) {
+					$(this).addClass( "inputchangenameover");
+					$(this).parent().children(':nth-child(2)').css('visibility', 'visible');
+				}
+			});
+			$( ".inputchangename").mouseout(function() {
+				if (focus == false) {
+					$(this).removeClass( "inputchangenameover");
+					$(this).parent().children(':nth-child(2)').css('visibility', 'hidden');
+				}		
+			});
+			$( "#accordion" ).accordion( "option", "icons", false );
+			$( "#accordion" ).click(function() {
+				$( ".inputchangename").blur();
+			});
+		}
+</script>

@@ -1,0 +1,100 @@
+<table>
+	<tr>
+		<td><b>Current contributors: </b></td>
+		<td><%= @job.contributed.count %></td>
+	</tr>
+	<tr>
+		<td><b>Open to additional contributors: </b></td>
+		<td class="field switch">
+			<% if @job.duration == 1 or @job.duration == 2 %>
+				<% if Date.today + 3 >= @job.date %>
+					No
+				<% else %>
+					Yes
+				<% end %>
+			<% else %>
+				<% if Date.today + 7 >= @job.date %>
+					No
+				<% else %>
+					Yes
+				<% end %>
+			<% end %>
+		</td>
+	</tr>
+</table>
+<br/>
+<%
+	@rewardsconverter = Array.new
+	@rewardsconverter[0] = "NEUTRAL"
+	@rewardsconverter[1] = "FAIR"
+	@rewardsconverter[2] = "GOOD"
+	@rewardsconverter[3] = "EXCELLENT"
+	@rewardsconverter[4] = "EXCEPTIONAL"
+%>
+<table class="table">
+	<thead>
+		<tr>
+			<th></th>
+			<th>Username</th>
+			<th>Reputation</th>
+			<th>Who invited</th>
+			<th>Acceptance date</th>
+			<th>Current score</th>
+			<th>Number of viral invitations sent</th>
+		</tr>
+	</thead>
+	
+	<tbody>	
+		<% @job.contributed.each do |contributor| %>
+			<tr class="contributionPending" id="contr<%= contributor.user.id %>">
+			  	<td><%= gravatar_for contributor.user %></td>
+				<% if contributor.user == current_user %>
+			  		<td style="color: #8ACD30;"><%= contributor.user.name %></td>
+				<%else%>
+					<td><%= contributor.user.name %></td>
+				<%end%>
+				<td><%= image_tag("stars/stars"+contributor.user.account.reputation.to_s+".png", :alt => "Sample App") %></td>
+				<td><%= User.find(Invitations.where(:to_email => contributor.user.email, :job_id => @job.id)[0].from_id).name%></td>
+				<td><%= time_ago_in_words(Invitations.where(:to_email => contributor.user.email, :job_id => @job.id)[0].updated_at)%> ago</td>
+				<td>
+					<% @rewards = Rewards.find(:first,:select => "points, total", :conditions => ["owner_id = ? and contributor_id = ? and job_id = ?", current_user.id, contributor.user.id, @job.id]) %>
+					<% if @rewards.nil?
+						@points = 0 
+					else
+						@points = @rewards.points
+					end %>
+					<%= @rewardsconverter[@points] %>
+				</td>
+				<td><%= Invitations.where(:from_id => contributor.user.id, :job_id => @job.id).count %></td>
+				<ul style="text-align: center;" class="contributionPending-popup-<%= contributor.user.id %>" title="<%= contributor.user.name %>">
+					<% if @job.status != 'closed' && current_user.id == @job.user.id %>
+						<input type="button" value="Remove" class="button" onclick="location.href='<%= '/contributions/'+@job.id.to_s+'/remove/'+contributor.user.id.to_s %>">
+					<% elsif contributor.user.id != current_user.id and !Follower.find(:first, :conditions => ['follower_id = ? and followed_id = ?', current_user.id, contributor.user.id ])%>
+						<input type="button" value="Add to my network" class="button" onclick="location.href='<%= addtomynetwork_contribution_path(contributor.user.id)+"?job_id="+@job.id.to_s %>'">
+					<% end%>
+					<input type=button value="Profile" class="button" onclick="location.href='<%=profile_path(contributor.user.profile)%>'">
+				</ul>
+				
+				<script>
+					/* Pop-up Dashboard - My Contributions*/
+						
+					$( ".contributionPending-popup-<%= contributor.user.id %>" ).dialog({
+						autoOpen: false,
+						height: 240,
+						minWidth: 250,
+						draggable: false,
+						resizable: false,
+						modal: true,
+						stack: false
+					});
+					
+					$( "#contr<%= contributor.user.id %>").click(function() {
+						$( ".contributionPending-popup-<%= contributor.user.id %>" ).dialog( "open" );
+						return false;
+					});
+					
+				</script>
+			</tr>	
+		<% end %>
+	</tbody>
+</table>

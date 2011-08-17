@@ -1,0 +1,80 @@
+<html>
+<head>
+  <title>knOrbit</title>
+    <%= csrf_meta_tag %>
+    <meta charset="utf-8">
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]><%= stylesheet_link_tag 'blueprint/ie' %><![endif]-->
+	
+    <%= javascript_include_tag 'application'  %>
+    <%= stylesheet_link_tag 'landing' %>
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-7279667-5']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+</head>
+<body>
+	<table class="knorbit">
+		<tr>
+			<td style="padding-right: 50px;">
+				<div style="margin-left: 60px;">
+					<a href="<%= root_path %>" title="Home Page"><%= image_tag("knorbit_home.png", :width => "400px" ) %></a></br>
+					<%= image_tag("claim.png", :width => "400px") %></br>
+				</div>
+				<p class="text">Find a group of experts to edit your projects collaboratively</p>
+				<iframe width="480" height="390" src="http://www.youtube.com/embed/iG9CE55wbtY" frameborder="0" allowfullscreen style="margin-left: 20px;"></iframe>
+			</td>
+			<td>
+				<%= devise_error_messages! %>
+				<div class="label">Log in</div>
+				<div class="shared_links"><%= render :partial => "devise/shared/links" %></div>
+			    <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+			    	<table id="log-in">
+			    		<tr>
+			    			<td><%= f.email_field :email, :value => 'E-mail', :onfocus=>"if(document.getElementById('user_email').value == 'E-mail') {document.getElementById('user_email').value=''}", :onblur => "if(document.getElementById('user_email').value == '') {document.getElementById('user_email').value = 'E-mail'} "%></td>
+			    			<td><%= f.text_field :password, :value => 'Password', :onfocus=>"if(document.getElementById('user_password').value == 'Password') {document.getElementById('user_password').value = ''; document.getElementById('user_password').type = 'password'}", :onblur => "if(document.getElementById('user_password').value == '') {document.getElementById('user_password').value = 'Password';  document.getElementById('user_password').type = 'text'} " %></td>
+			    			<td><%= f.submit "Log in", :class => "button" %></td>
+			    		</tr>
+			    		<tr>
+			    			<td>
+			    				<% if devise_mapping.rememberable? -%>
+							    	<%= f.check_box :remember_me %> <%= f.label :remember_me, :id => "remember_me" %>
+							  	<% end -%>
+					  		</td>
+					  		<td>
+					  			<%- if devise_mapping.recoverable? && controller_name != 'passwords' %>
+									<%= link_to "Forgot your password?", new_password_path(resource_name), :id => "forgot" %><br />
+								<% end -%>
+					  		</td>
+			    		</tr>
+			    	</table>		
+				<% end %>
+				</br>	
+				
+				<div class="label">Join knOrbit</div>
+				<div class="shared_links"><%= render :partial => "devise/shared/links" %></div>
+				<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+					<div class="signup">		
+						<%= f.text_field :name, :value => 'Name', :onfocus=>"if(document.getElementById('user_name').value == 'Name') {document.getElementById('user_name').value=''}", :onblur => "if(document.getElementById('user_name').value == '') {document.getElementById('user_name').value = 'Name'} "%></br>
+						<%= f.email_field :email, :id => "email_reg", :value => 'E-mail', :onfocus=>"if(document.getElementById('email_reg').value == 'E-mail') {document.getElementById('email_reg').value=''}", :onblur => "if(document.getElementById('email_reg').value == '') {document.getElementById('email_reg').value = 'E-mail'} " %></br>
+						<%= f.text_field :password, :id => "pass_reg", :value => 'Password', :onfocus=>"if(document.getElementById('pass_reg').value == 'Password') {document.getElementById('pass_reg').value = ''; document.getElementById('pass_reg').type = 'password'}", :onblur => "if(document.getElementById('pass_reg').value == '') {document.getElementById('pass_reg').value = 'Password';  document.getElementById('pass_reg').type = 'text'} "  %></br>
+						<%= f.text_field :password_confirmation, :value => 'Confirm Password', :onfocus=>"if(document.getElementById('user_password_confirmation').value == 'Confirm Password') {document.getElementById('user_password_confirmation').value = ''; document.getElementById('user_password_confirmation').type = 'password'}", :onblur => "if(document.getElementById('user_password_confirmation').value == '') {document.getElementById('user_password_confirmation').value = 'Confirm Password';  document.getElementById('user_password_confirmation').type = 'text'} " %></br>
+						<%= f.submit "Join!", :class => "button" %>
+					</div>
+				<% end %>
+			</td>
+		</tr>
+	</table>		
+</body>
+</html>

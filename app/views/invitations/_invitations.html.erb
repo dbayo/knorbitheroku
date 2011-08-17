@@ -1,0 +1,10 @@
+<%= Si entra aqui es que _invitation.html es necesario%>
+<% if current_user.email == invitations.user_email && invitations.status == 'pending' %>
+	<tr>
+	  <td><%= invitations.job_id %></td>
+	  <td><%= invitations.status %></td>
+		<!-- accept_invitation_path(invitation) -->
+	  <td><%= link_to 'Accept', '/invitations/'+invitations.id.to_s+'/accept' %></td>
+	  <td><%= link_to 'Refuse', '/invitations/'+invitations.id.to_s+'/refuse' %></td>		  
+	</tr>
+<% end %>

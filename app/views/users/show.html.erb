@@ -1,0 +1,81 @@
+<% if !notice.nil? %>
+	<div class="noticesuccess">
+		<%= image_tag("visto.png", :alt => "Sample App") %><span class="green"><%= notice %></span><hr />
+	</div>
+	<br/>
+<% end%>
+<input type="button" value="+ New Orbit" class="button" onclick="location.href='<%= new_job_path %>'">
+<table class="table">
+	<thead>
+		<tr>
+			<th style="width:20%;">My Orbits</th>
+			<th style="width:15%;">Status</th>
+			<th style="width:15%;">Peers</th>
+			<th style="width:15%;">Deadline</th>
+			<th style="width:15%;">Activity</th>
+			<th style="width:15%;">Sponsored</th>
+		</tr>
+	</thead>
+	
+	<% unless @user.jobs.empty? %>
+		<tbody>
+			<%= render @jobs %>
+		</tbody>	
+	<% end %>
+</table>
+<%= will_paginate @jobs %>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th style="width:20%;">Peer Orbits</th>
+			<th style="width:15%;">Status</th>
+			<th style="width:15%;">Peers</th>
+			<th style="width:15%;">Deadline</th>
+			<th style="width:15%;">Activity</th>
+			<th style="width:15%;">Owner</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @invitations.each do |invitation| %>		
+			<tr class="contributionPending" id="<%= invitation.job.id %>">
+			  	<td id="name"><%= truncate(invitation.job.name, :length => 22)%></td>
+			  	<td><%= invitation.job.date - Date.today %> Days to accept</td>
+				<td><%= invitation.job.contributed.count %></td>
+				<td><%= invitation.job.date %></td>
+				<td></td>
+				<td><%= invitation.job.user.name %></td>
+				<ul style="text-align: center;" class="contributionPending-popup-<%= invitation.job.id %>" title="Orbit: <%= truncate(invitation.job.name, :length => 22)%>">
+					<input type="button" value="Accept invitation" class="button" onclick="location.href='/invitations/<%=invitation.id.to_s%>/accept'">
+					<input type="button" value="Reject invitation" class="button" onclick="location.href='/invitations/<%=invitation.id.to_s%>/refuse'">
+					<input type="button" value="View orbit summary" class="button" onclick="location.href='<%= invitation.job.wiki%>'">
+				</ul>
+				
+				<script>
+					/* Pop-up Dashboard - My Contributions*/
+						
+					$( ".contributionPending-popup-<%= invitation.job.id %>" ).dialog({
+						autoOpen: false,
+						height: 240,
+						minWidth: 250,
+						draggable: false,
+						resizable: false,
+						modal: true,
+						stack: false
+					});
+					
+					$( "#<%= invitation.job.id %>").click(function() {
+						$( ".contributionPending-popup-<%= invitation.job.id %>" ).dialog( "open" );
+						return false;
+					});
+					
+				</script>		
+			</tr>
+		<% end %>
+	</tbody>
+	<% unless @user.contribute.empty? %>
+		<tbody>
+			<%= render @contributions %>	
+  		</tbody>
+	<% end %>
+</table>

@@ -1,0 +1,25 @@
+<style>
+	#sortable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
+	#sortable li { margin: 0 5px 5px 5px; padding: 5px; font-size: 1.2em; height: 1.5em; }
+	html>body #sortable li { height: 1.5em; line-height: 1.2em; }
+	.ui-state-highlight { height: 1.5em; line-height: 1.2em; }
+	.name { position: absolute; border-style: solid; border-width: 0; color: black !important;  background-color: transparent !important; width: 550px; padding-left: 20px !important;}
+</style>
+<div id="accordionsummary">
+	<% if !@job.template.nil? %>
+		<% @job.template.split(",").each do |page|%>
+			<% @doc = Space.find(:first, :conditions => ['wiki_name = ?', @job.wikispace ]).documents.where('name = ?', page)[0] %>
+			<div id="<%=@doc.name%>">
+				<h3 style="height: 45px;"><%= image_tag("flecha_derecha.png", :style => "float:left; margin-left: 10px; margin-top: 10px;")%>
+					<a href="#" class="name" style="margin-left: 35px; margin-top: 5px;"><%=@doc.name%></a>		
+				</h3>
+				<% if !@doc.content.nil? && !@doc.content.empty? %>
+					<div id="<%=@doc.id%>" style="min-height: 30px;">
+						<%=@doc.content.html_safe unless @doc.content.nil?%>				
+					</div>
+				<% end %>
+			</div>
+		<% end %>
+	<% end %>	
+</div>
+

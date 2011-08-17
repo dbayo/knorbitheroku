@@ -1,0 +1,56 @@
+--- 
+job: 
+  :columns: 
+  - id
+  - name
+  - title
+  - description
+  - wiki
+  - o_date
+  - s_date
+  - status
+  - user_id
+  - created_at
+  - updated_at
+  :associations: 
+  - user
+monkey: 
+  :columns: 
+  - id
+  - name
+  - desc
+  - created_at
+  - updated_at
+  :associations: []
+
+user_token: 
+  :columns: 
+  - id
+  - user_id
+  - provider
+  - uid
+  - created_at
+  - updated_at
+  :associations: 
+  - user
+user: 
+  :columns: 
+  - id
+  - email
+  - encrypted_password
+  - reset_password_token
+  - remember_token
+  - remember_created_at
+  - sign_in_count
+  - current_sign_in_at
+  - last_sign_in_at
+  - current_sign_in_ip
+  - last_sign_in_ip
+  - confirmation_token
+  - confirmed_at
+  - confirmation_sent_at
+  - created_at
+  - updated_at
+  :associations: 
+  - jobs
+  - user_tokens

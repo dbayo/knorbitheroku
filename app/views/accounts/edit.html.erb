@@ -1,0 +1,300 @@
+<%= form_for(@account) do |f| %>
+<div id="identification">
+	<h2 class="green">PREFERENCES</h2>
+	<div class="field">
+		<label><b>Languages : </b><%= @account.language %></label>
+		<span id="tooltip">
+			<img src="/images/help.png"  title="The tooltip text #1"/>
+		</span>
+	</div>
+	
+	<div id="exampleTextDiv" align="left">
+	  	<font size="-1" face="Arial, sans-serif" color="#6f6f6f">
+	  		To select nonconsecutive files or folders, hold down CTRL/Cmd, and then click each item you want
+	  	</font>
+	</div>
+	<div class="field">
+	<select multiple="multiple" name="fromBox[]" size="7" id="fromBox">
+	<option>Afrikaans</option><option>Albanian</option><option>Arabic</option><option>Belarusian</option><option>Bulgarian</option><option>Catalan</option><option>Chinese</option><option>Croatian</option><option>Czech</option><option >Danish</option><option >Dutch</option><option>English</option><option>Estonian</option><option>Filipino</option><option >Finnish</option><option>French</option><option>Galician</option><option>German/option><option >Greek</option><option >Haitian Creole</option><option>Hebrew</option><option >Hindi</option><option >Hungarian</option><option >Icelandic</option><option >Indonesian</option><option >Irish</option><option >Italian</option><option >Japanese</option><option >Korean</option><option >Latvian</option><option >Lithuanian</option><option >Macedonian</option><option>Malay</option><option >Maltese</option><option >Norwegian</option><option >Persian</option><option>Polish</option><option >Portuguese</option><option >Romanian</option><option >Russian</option><option>Serbian</option><option>Slovak</option><option >Slovenian</option><option  selected>Spanish</option><option>Swahili</option><option >Swedish</option><option >Thai</option><option>Turkish</option><option >Ukrainian</option><option >Vietnamese</option><option>Welsh</option><option>Yiddish</option></select>
+	</select>
+		</div>
+	<br/>
+	<div class="field">
+		<b>Country : </b>
+		<%= select :account, :geospace,
+			['Afghanistan',
+			'Albania',
+			'Algeria',
+			'Andorra',
+			'Angola',
+			'Antigua and Barbuda',
+			'Argentina',
+			'Armenia',
+			'Australia',
+			'Austria',
+			'Azerbaijan',
+			'Bahamas, The',
+			'Bahrain',
+			'Bangladesh',
+			'Barbados',
+			'Belarus',
+			'Belgium',
+			'Belize',
+			'Benin',
+			'Bhutan',
+			'Bolivia',
+			'Bosnia and Herzegovina',
+			'Botswana',
+			'Brazil',
+			'Brunei',
+			'Bulgaria',
+			'Burkina Faso',
+			'Burundi',
+			'Cambodia',
+			'Cameroon',
+			'Canada',
+			'Cape Verde',
+			'Central African Republic',
+			'Chad',
+			'Chile',
+			'China',
+			'Colombia',
+			'Comoros',
+			'Congo',
+			'Costa Rica',
+			'Ivory Coast',
+			'Croatia',
+			'Cuba',
+			'Cyprus',
+			'Czech Republic',
+			'Denmark',
+			'Djibouti',
+			'Dominica',
+			'Dominican Republic',
+			'Ecuador',
+			'Egypt',
+			'El Salvador',
+			'Equatorial Guinea',
+			'Eritrea',
+			'Estonia',
+			'Ethiopia',
+			'Fiji',
+			'Finland',
+			'France',
+			'Gabon',
+			'Gambia',
+			'Georgia',
+			'Germany',
+			'Ghana',
+			'Greece',
+			'Grenada',
+			'Guatemala',
+			'Guinea',
+			'Guinea-Bissau',
+			'Guyana',
+			'Haiti',
+			'Honduras',
+			'Hungary',
+			'Iceland',
+			'India',
+			'Indonesia',
+			'Iran',
+			'Iraq',
+			'Ireland',
+			'Israel',
+			'Jamaica',
+			'Japan',
+			'Jordan',
+			'Kazakhstan',
+			'Kenya',
+			'Kiribati',
+			'North Korea',
+			'South Korea',
+			'Kuwait',
+			'Kyrgyzstan',
+			'Laos',
+			'Latvia',
+			'Lebanon',
+			'Lesotho',
+			'Liberia',
+			'Libya',
+			'Liechtenstein',
+			'Lithuania',
+			'Luxembourg',
+			'Macedonia',
+			'Madagascar',
+			'Malawi',
+			'Malaysia',
+			'Maldives',
+			'Mali',
+			'Malta',
+			'Marshall Islands',
+			'Mauritania',
+			'Mauritius',
+			'Mexico',
+			'Micronesia',
+			'Moldova',
+			'Monaco',
+			'Mongolia',
+			'Montenegro',
+			'Morocco',
+			'Mozambique',
+			'Myanmar (Burma)',
+			'Namibia',
+			'Nauru',
+			'Nepal',
+			'Netherlands',
+			'New Zealand',
+			'Nicaragua',
+			'Niger',
+			'Nigeria',
+			'Norway',
+			'Oman',
+			'Pakistan',
+			'Palau',
+			'Panama',
+			'Papua New Guinea',
+			'Paraguay',
+			'Peru',
+			'Philippines',
+			'Poland',
+			'Portugal',
+			'Qatar',
+			'Romania',
+			'Russia',
+			'Rwanda',
+			'Saint Kitts and Nevis',
+			'Saint Lucia',
+			'Saint Vincent and the Grenadines',
+			'Samoa',
+			'San Marino',
+			'Sao Tome and Principe',
+			'Saudi Arabia',
+			'Senegal',
+			'Serbia',
+			'Seychelles',
+			'Sierra Leone',
+			'Singapore',
+			'Slovakia',
+			'Slovenia',
+			'Solomon Islands',
+			'Somalia',
+			'South Africa',
+			'Spain',
+			'Sri Lanka',
+			'Sudan',
+			'Suriname',
+			'Swaziland',
+			'Sweden',
+			'Switzerland',
+			'Syria',
+			'Tajikistan',
+			'Tanzania',
+			'Thailand',
+			'East Timor',
+			'Togo',
+			'Tonga',
+			'Trinidad and Tobago',
+			'Tunisia',
+			'Turkey',
+			'Turkmenistan',
+			'Tuvalu',
+			'Uganda',
+			'Ukraine',
+			'United Arab Emirates',
+			'United Kingdom',
+			'United States',
+			'Uruguay',
+			'Uzbekistan',
+			'Vanuatu',
+			'Vatican City',
+			'Venezuela',
+			'Vietnam',
+			'Yemen',
+			'Zambia',
+			'Zimbabwe']
+		 %>
+	</div>
+	<div id="exampleTextDiv" align="left">
+	  	<font size="-1" face="Arial, sans-serif" color="#6f6f6f">
+	  		Which regions or countries you work in. 
+	  	</font>
+	</div><br/>
+	<table>
+		<tr>
+			<td><b>Contributor active:</b></td>
+			<td class="field switch">
+				<%= f.radio_button :active, "Yes", :id=>"radio1" %>
+				<%= f.radio_button :active, "No",  :id=>"radio2" %>
+				<% if @account.active == "Yes"%>
+					<label for="radio1" class="cb-enable selected"><span>Yes</span></label>
+					<label for="radio2" class="cb-disable"><span>No</span></label>
+				<% else %>
+					<label for="radio1" class="cb-enable"><span>Yes</span></label>
+					<label for="radio2" class="cb-disable selected"><span>No</span></label>
+				<% end %>
+			</td>
+		</tr>
+		<tr>
+			<td><b>Max. invitations allowed per week:</b></td>
+			<td class="field switch">
+				<%= f.select :maxinv, ['10','9','8','7','6','5','4','3','2','1','0'] %>
+			</td>
+		</tr>
+		<tr>
+			<td><b>Allow other users with whom you are networked to send you messages:</b></td>
+			<td class="field switch">
+				<%= f.radio_button :allowsms, "Yes", :id=>"radio3" %>
+				<%= f.radio_button :allowsms, "No",  :id=>"radio4" %>
+				<% if @account.allowsms == "Yes"%>
+					<label for="radio3" class="cb-enable selected"><span>Yes</span></label>
+					<label for="radio4" class="cb-disable"><span>No</span></label>
+				<% else %>
+					<label for="radio3" class="cb-enable"><span>Yes</span></label>
+					<label for="radio4" class="cb-disable selected"><span>No</span></label>
+				<% end %>
+			</td>
+		</tr>
+		<tr>
+			<td><b>Allow email alerts:</b></td>
+			<td class="field switch">
+				<%= f.radio_button :allowalerts, "Yes", :id=>"radio5" %>
+				<%= f.radio_button :allowalerts, "No",  :id=>"radio6" %>
+				<% if @account.allowalerts == "Yes"%>
+					<label for="radio5" class="cb-enable selected"><span>Yes</span></label>
+					<label for="radio6" class="cb-disable"><span>No</span></label>
+				<% else %>
+					<label for="radio5" class="cb-enable"><span>Yes</span></label>
+					<label for="radio6" class="cb-disable selected"><span>No</span></label>
+				<% end %>
+			</td>
+		</tr>
+	</table>
+	<div class="field">
+		<%= link_to image_tag("delicious.png"), "http://www.delicious.com", :title => 'Delicious'%> : 	
+		<%= f.text_field :delicious %>	
+	</div>
+	<div id="exampleTextDiv" align="left">
+	  	<font size="-1" face="Arial, sans-serif" color="#6f6f6f">
+	  		Your delicious account if you have one
+	  	</font>
+	</div><br/>
+	<div><%= submit_tag 'Save', :class => "button"%></div>
+</div>
+<% end %>
+<script type="text/javascript"> 
+    $(document).ready( function(){ 
+		$(".cb-enable").click(function(){
+			var parent = $(this).parents('.switch');
+			$('.cb-disable',parent).removeClass('selected');
+			$(this).addClass('selected');
+			$('.checkbox',parent).attr('checked', true);
+		});
+		$(".cb-disable").click(function(){
+			var parent = $(this).parents('.switch');
+			$('.cb-enable',parent).removeClass('selected');
+			$(this).addClass('selected');
+			$('.checkbox',parent).attr('checked', false);
+		});
+	});
+</script>

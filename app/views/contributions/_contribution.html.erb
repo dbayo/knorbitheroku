@@ -1,0 +1,49 @@
+<% if contribution.job.status != "closed" and contribution.job.status != "System" %>
+	<tr class="contributions" id="<%= contribution.job.id %>">
+		<td><%= truncate(contribution.job.name, :length => 22)%></a></td>
+	  	<td><%= contribution.job.status %></td>
+		<td><%= contribution.job.contributed.count %></td>
+		<td><%= contribution.job.date %></td>
+		<td>
+			<% @lastvisit = Activity.where(:job_id => contribution.job.id, :user_id => current_user.id, :code => 3)[0] %>
+			<% @lastactivities = Activity.where('job_id = ? and code = ? and updated_at > ?', contribution.job.id, 2, @lastvisit.updated_at) unless @lastvisit.nil?%>
+			<%= if @lastactivities.nil?
+					"0"
+				else
+					@lastactivities.count
+				end	 
+			%>
+		</td>
+		<td><%= contribution.job.user.name %></td>
+		<ul style="text-align: center;" class="contributions-popup-<%= contribution.job.id %>" title="Orbit: <%= truncate(contribution.job.name, :length => 22)%>">
+			<input type="button" value="Edit Orbit" class="button" onclick="location.href='<%=contribution.job.wiki%>'">
+			<% if contribution.job.status == "open" and contribution.job.viral == "Yes" %>
+				<input type="button" value="Go to invite" class="button" onclick="location.href='<%=invitations_job_path(contribution.job)%>#tabs-3'">	
+			<% end%>
+			<input type="button" value="Go to peers" class="button" onclick="location.href='<%=invitations_job_path(contribution.job)%>#tabs-4'">
+			<input type="button" value="Delete" class="button" onclick="location.href='/contributions/<%=contribution.job.id.to_s%>/remove/<%=current_user.id.to_s%>'">
+		</ul>
+		<script>
+	
+			/* Pop-up Dashboard*/
+		
+			/* Pop-up Dashboard - My Contributions*/
+	
+			$( ".contributions-popup-<%= contribution.job.id %>" ).dialog({
+				autoOpen: false,
+				height: 300,
+				minWidth: 300,
+				draggable: false,
+				resizable: false,
+				modal: true
+			});
+			
+			$( "#<%= contribution.job.id %>").click(function() {
+				$( ".contributions-popup-<%= contribution.job.id %>" ).dialog( "open" );
+				return false;
+			});
+			
+		</script>
+			
+	</tr>
+<% end%>

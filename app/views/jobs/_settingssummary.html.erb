@@ -1,0 +1,17 @@
+<div class="field">
+	<label><b>Title: </b></label> 
+	<%= @job.name %>
+</div><br/>
+<div class="field">
+	<label><b>Description: </b></label><br/><br/>
+	<%= @job.description %>
+</div><br/><br/>
+<div class="field">
+	<label><b> period ( in weeks ): </b></label>
+	<%= @job.duration %>
+</div><br/>
+<div class="field">
+	<label><b>Job visibility: </b></label>
+	<%= f.radio_button :public , "Yes", :disabled => "disabled"%> <span style="color:#6F6F6F;"> Public / </span>
+	<%= f.radio_button :public, "No", :disabled => "disabled" %> <span style="color:#6F6F6F;">Private</span>
+</div>

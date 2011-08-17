@@ -1,0 +1,233 @@
+<html>
+<head>
+  	<title>knOrbit</title>
+    <%= csrf_meta_tag %>
+    <meta charset="utf-8">
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]><%= stylesheet_link_tag 'blueprint/ie' %><![endif]-->	
+    
+    <!-- TOOLTIP - standalone page styling (can be removed) -->
+	<link rel="stylesheet" type="text/css" href="http://static.flowplayer.org/tools/css/standalone.css">	
+    
+	<script type="text/javascript" src="https://www.google.com/jsapi?key=ABQIAAAABye5K0cHtJK_z9kU8B6D1BTIzVcxxxAsoNGMLX805k5HdJjc_xTrE_hPgleOhTavYj-DfcKF2Bdjtg"></script>
+
+	<%= javascript_include_tag 'http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js' %>
+	<!-- TOOLTIP - include the Tools -->
+	<script src="http://cdn.jquerytools.org/1.2.5/full/jquery.tools.min.js"></script>
+	
+	<%= javascript_include_tag 'jquery-ui.min'  %>
+	<%= stylesheet_link_tag 'theme/jquery-ui-1.8.10.custom' %>
+	
+	<!-- Google web font-->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans&v2' rel='stylesheet' type='text/css'>
+	
+    <%= stylesheet_link_tag 'custom' %>
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-7279667-5']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+</head>
+<body>
+	<script type="text/javascript" src="http://apis.google.com/js/plusone.js">
+	  {lang: 'en'}
+	</script>
+	<div class="knorbit">
+		<div id="main">
+			<div class="header1">
+				<ul>
+					<li style="float: right;"><%= link_to "LOG OUT", destroy_user_session_path %></li>	
+					<li><%= current_user.name%></li>		
+				</ul>		
+			</div>
+			<div class="header2">
+				<div id="logo">
+					<a href="<%= root_path %>" title="Home Page"><%= image_tag("knorbit.png", :alt => "Sample App", :class => "logo") %></a>		
+				</div>
+				<div class="menu2">
+					<ul>
+						<%if request.request_uri == '/user' %>
+							<li style="margin-top: -5px;"><a href="/" class="house" style="background-position: 0px 0px;"></a></li>					
+						<%else%>
+							<li style="margin-top: -5px;"><a href="/" class="house" style="background-position: 0px 24px;"></a></li>
+						<%end%>
+						
+						<style>
+							.house {										
+								padding-right: 23px !important;
+								padding-bottom: 5px !important;
+								background-image: url("/images/housemenu.png");
+							}
+							
+							.house:hover {
+								background-position: 0px 0px !important;
+							}				
+						</style>
+						
+						
+						<%if request.request_uri == '/people' %>
+							<li style="margin-left: 20px;"><%= link_to "MY NETWORK", people_path, :class => "bt_active"%></li>
+						<%else%>
+							<li style="margin-left: 20px;"><%= link_to "MY NETWORK", people_path%></li>
+						<%end%>
+						
+						<%if request.request_uri == jobs_path %>
+							<li><%= link_to "MY TRAIL", jobs_path, :class => "bt_active"%></li>
+						<%else%>
+							<li><%= link_to "MY TRAIL", jobs_path%></li>
+						<%end%>
+						
+						<%if request.request_uri == profile_path(current_user.profile) %>
+							<li><%= link_to "MY PROFILE", profile_path(current_user.profile), :class => "bt_active"%></li>
+						<%else%>
+							<li><%= link_to "MY PROFILE", profile_path(current_user.profile)%></li>
+						<%end%>
+						
+						<%if request.request_uri == account_path(current_user.profile) %>
+							<li><%= link_to "MY ACCOUNT", account_path(current_user.profile), :class => "bt_active"%></li>
+						<%else%>
+							<li><%= link_to "MY ACCOUNT", account_path(current_user.profile)%></li>
+						<%end%>
+						<li>
+							<% form_tag search_job_path(current_user.id), :method => 'get' do %>
+								<input id="search" style="font-size: 19px;" type="search" results="5" name="search" placeholder="Search Orbits...">
+							<% end %>
+						</li>
+					</ul>
+					
+				</div>			
+			</div>
+			<table class="header3">
+				<tr>
+					<td>
+						<div class="divsearch">
+							<span style="float:left; padding-top: 3px; margin-left: 5px;">PURCHASE</span>
+						</div>
+						
+					</td>
+					<td>
+						<div class="star" id="star">
+							<div><%= gravatar_for(current_user, :size=>50) %></div>
+							<p>MY STATUS</p>
+						</div>
+					</td>
+					<td>
+						<% @invcount = Invitations.find(:all, :conditions => ['to_email = ? and status = ?', current_user.email, 'pending']).count %>
+						<% @rewcount = Job.find(:all, :conditions => ['status = ? and user_id = ?', 'Ready for reward',  current_user.id]).count %>
+						<% @mescount = Message.find(:all, :conditions => ['to_id = ? and read = ?',  current_user.id, false]).count %>
+						<div class="flag" id="flag">
+							<% if @invcount + @rewcount + @mescount == 0 %>
+		    					<div><%= image_tag("greenflag.png") %></div><p style="position:absolute; margin-left:65px; padding-right: 0px; z-index: 2;">PENDING ACTIONS</p>
+		    				<% else %>
+		    					<div><%= image_tag("flag.png") %></div><p style="position:absolute; margin-left:55px; padding-right: 0px; z-index: 2;">(<%=@invcount + @rewcount + @mescount%>) PENDING ACTIONS</p>
+		    				<% end %>
+						</div>
+					</td>			
+				</tr>
+			</table>
+			<div id="user-popup" title="My Status" style="display:none">
+				<div style="min-height: 70px;">         	
+					<%= gravatar_for(current_user, :size=>80) %> 
+					<% if !current_user.profile.nil? %>	
+						<p style="margin-left: 90px; margin-top:0px;">Credit: <span class="green"><%= current_user.account.credit %></span></p>
+						<p style="margin-left: 90px;">Reputation 	            
+						<%= image_tag("stars/stars"+current_user.account.reputation.to_s+".png", :alt => "Sample App") %></p><br>	 	
+    					
+ 					<% end %> 	
+ 				</div>	 	
+  				<hr>
+  				<table style="width:100%;">
+  					<tr>
+  						<td><b>Account type:</b></td>
+  						<td><%= current_user.account.account %></td>
+  					</tr>
+  					<tr>
+  						<td><b>Language/s: </b></td>
+  						<td><%= current_user.account.language%><br>
+  					</tr>
+  					<tr>
+  						<td><b>Country: </b></td>
+  						<td><%= current_user.account.geospace%><br>
+  					</tr>
+  					<tr>
+  						<td><b>Contributor active:</b></td>
+						<td><%= current_user.account.active%></td>
+  					</tr>
+  					<tr>
+  						<%
+							@i = 0
+							@i = @i+1 if current_user.profile.qualifier1.split(",").length == 1
+							@i = @i+2 if current_user.profile.qualifier1.split(",").length >= 2
+							@i = @i+1 if current_user.profile.qualifier2.split(",").length == 1
+							@i = @i+2 if current_user.profile.qualifier2.split(",").length >= 2
+							@i = @i+1 if current_user.profile.qualifier3.split(",").length == 1
+							@i = @i+2 if current_user.profile.qualifier3.split(",").length >= 2
+							@i = @i+1 if current_user.profile.qualifier4.split(",").length == 1
+							@i = @i+2 if current_user.profile.qualifier4.split(",").length >= 2
+							@i = @i+1 if current_user.profile.qualifier5.split(",").length == 1
+							@i = @i+2 if current_user.profile.qualifier5.split(",").length >= 2
+						%>
+  						<td><b>Profile completion: </b></td>
+  						<td>
+  							<div id="progressbar"></div>
+							<span style="position:absolute; margin-top: -20px; margin-left: 50px;"><%= @i * 10 %>%</span>
+						</td>
+  					</tr>
+  				</table>	 	         	
+			</div>
+			
+			<div id="recent-popup" title="My pending actions" style="display:none">
+				<div style="min-height: 100px;">
+					<% if @invcount + @rewcount + @mescount == 0 %>
+    					<div><%= image_tag("greenflag.png", :height => "30%", :style => "float:left;") %></div>
+    				<% else %>
+    					<div><%= image_tag("flag.png", :height => "30%", :style => "float:left;") %></div>
+    				<% end %>
+ 				</div>
+ 				<hr>
+				You have <span style="color: red;"><%= @invcount %></span> pending invitations<br>
+				You have <span style="color: red;"><%= @rewcount %></span> pending rewards<br>
+				You have <span style="color: red;"><%= @mescount %></span> unread messages in the <%= link_to "Inbox", messages_path%><br>	 	
+			</div>
+			<div class="content" id="content">
+				<%= yield %>
+			</div>
+		</div>
+		<div id="footer">
+			<ul>
+				<li><a href="/pages/contact">Contact</a></li>
+				<li><a href="/pages/help">Help</a></li>
+		        <li><a href="/pages/about">About knOrbit</a></li>		        
+	        </ul>
+	    </div>
+	</div>		
+</body>
+</html>
+
+<%= javascript_include_tag 'application'  %>
+<%= javascript_include_tag 'AJAX'  %>
+
+<style>
+	.ui-progressbar-value { border: 1px solid black; border-right: none; background-image: url(../images/pbar-ani.gif); }
+	#progressbar {
+		height: 20px !important;
+		border: 1px solid black; 
+	}
+</style>
+<script>
+	$(function() {
+		$( "#progressbar" ).progressbar({
+			value: <%= @i * 10 %>
+		});
+	});
+</script>
