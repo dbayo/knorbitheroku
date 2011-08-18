@@ -37,7 +37,6 @@ gem 'differ'
 # gem 'aws-s3', :require => 'aws/s3'
 gem 'htmlentities'
 gem 'uuidtools'
-gem 'mongrel'
 gem 'diffy'
 gem 'wicked_pdf'
 
